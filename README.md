@@ -28,7 +28,7 @@ Questo fork parte dalla base `v0.3.1` dell'app originale e aggiunge localizzazio
 - schermata pausa con supporto allo sfondo attuale di macOS e blur opzionale
 - preset colore disabilitati quando e attivo lo sfondo del Mac
 - overlay di pausa piu coprente e meno aggirabile tramite uscita normale
-- opzione per nascondere i pulsanti `Salta` e `Termina prima`, lasciando solo messaggio e conto alla rovescia
+- opzioni per nascondere titolo pausa, `Salta` e `Termina prima`, lasciando solo messaggio e conto alla rovescia
 - reset del timer quando il Mac si riattiva o la sessione torna attiva, per evitare pause immediate dopo sleep o blocco schermo
 - icona macOS rigenerata per riempire correttamente il contenitore
 

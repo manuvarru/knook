@@ -283,8 +283,16 @@ private struct BreaksSettingsPane: View {
                         model.saveSettings()
                     }
                 ))
+
+                Toggle("Mostra il titolo della pausa", isOn: Binding(
+                    get: { model.settings.breakSettings.showBreakTitle },
+                    set: { newValue in
+                        model.settings.breakSettings.showBreakTitle = newValue
+                        model.saveSettings()
+                    }
+                ))
             } footer: {
-                Text("Disattiva entrambi i controlli per mostrare solo messaggio e conto alla rovescia. Flessibile: salta quando vuoi. Bilanciata: salta dopo 8 secondi. Rigorosa: non puoi saltare.")
+                Text("Disattiva i controlli e il titolo per mostrare solo messaggio e conto alla rovescia. Flessibile: salta quando vuoi. Bilanciata: salta dopo 8 secondi. Rigorosa: non puoi saltare.")
             }
 
             Section {

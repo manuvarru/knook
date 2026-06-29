@@ -118,6 +118,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
     public var longBreaksEnabled: Bool
     public var allowEarlyEnd: Bool
     public var showSkipButton: Bool
+    public var showBreakTitle: Bool
     public var skipPolicy: SkipPolicy
     public var customMessages: [String]
     public var selectedSound: BreakSound
@@ -133,6 +134,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         longBreaksEnabled: Bool,
         allowEarlyEnd: Bool,
         showSkipButton: Bool = true,
+        showBreakTitle: Bool = true,
         skipPolicy: SkipPolicy,
         customMessages: [String],
         selectedSound: BreakSound,
@@ -147,6 +149,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         self.longBreaksEnabled = longBreaksEnabled
         self.allowEarlyEnd = allowEarlyEnd
         self.showSkipButton = showSkipButton
+        self.showBreakTitle = showBreakTitle
         self.skipPolicy = skipPolicy
         self.customMessages = customMessages
         self.selectedSound = selectedSound
@@ -163,6 +166,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         longBreaksEnabled: true,
         allowEarlyEnd: true,
         showSkipButton: true,
+        showBreakTitle: true,
         skipPolicy: .balanced,
         customMessages: [
             "Guarda lontano nella stanza e rilassa lo sguardo.",
@@ -197,6 +201,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         case longBreaksEnabled
         case allowEarlyEnd
         case showSkipButton
+        case showBreakTitle
         case skipPolicy
         case customMessages
         case selectedSound
@@ -215,6 +220,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
             longBreaksEnabled: try container.decodeIfPresent(Bool.self, forKey: .longBreaksEnabled) ?? Self.default.longBreaksEnabled,
             allowEarlyEnd: try container.decodeIfPresent(Bool.self, forKey: .allowEarlyEnd) ?? Self.default.allowEarlyEnd,
             showSkipButton: try container.decodeIfPresent(Bool.self, forKey: .showSkipButton) ?? Self.default.showSkipButton,
+            showBreakTitle: try container.decodeIfPresent(Bool.self, forKey: .showBreakTitle) ?? Self.default.showBreakTitle,
             skipPolicy: try container.decodeIfPresent(SkipPolicy.self, forKey: .skipPolicy) ?? Self.default.skipPolicy,
             customMessages: try container.decodeIfPresent([String].self, forKey: .customMessages) ?? Self.default.customMessages,
             selectedSound: try container.decodeIfPresent(BreakSound.self, forKey: .selectedSound) ?? Self.default.selectedSound,

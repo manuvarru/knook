@@ -22,9 +22,11 @@ struct BreakOverlayView: View {
             }
 
             VStack(spacing: 20) {
-                Text(session.kind.title)
-                    .font(.system(size: 20, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.7))
+                if model.settings.breakSettings.showBreakTitle {
+                    Text(session.kind.title)
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundStyle(.white.opacity(0.7))
+                }
 
                 Text(session.message)
                     .font(.system(size: 42, weight: .semibold))

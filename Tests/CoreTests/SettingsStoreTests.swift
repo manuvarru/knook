@@ -88,6 +88,7 @@ final class SettingsStoreTests: XCTestCase {
         XCTAssertEqual(loaded.schemaVersion, AppSettings.currentSchemaVersion)
         XCTAssertFalse(loaded.smartPauseSettings.pauseDuringFullscreenFocus)
         XCTAssertTrue(loaded.breakSettings.showSkipButton)
+        XCTAssertTrue(loaded.breakSettings.showBreakTitle)
         XCTAssertFalse(persistedAfterMigration.contains("reminderLeadTime"))
         XCTAssertEqual(loaded.breakSettings.customMessages, [
             "Guarda lontano nella stanza e rilassa lo sguardo.",
