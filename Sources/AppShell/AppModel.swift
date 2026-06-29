@@ -41,6 +41,7 @@ final class AppModel: ObservableObject {
     private var updateStateCancellable: AnyCancellable?
     private var hasHandledInitialAppLaunch = false
     private var lastTickDate: Date?
+    private var hasObservedActivityForIdleReset = false
     private let minimumResumeTickGapThreshold: TimeInterval = 60
 
     private lazy var settingsWindowController = SettingsWindowController()
@@ -175,7 +176,8 @@ final class AppModel: ObservableObject {
             activityLogStore.recordActivity(at: now)
         }
 
-        let snapshot = scheduler.advance(to: now, idleSeconds: idleSeconds)
+        let schedulerIdleSeconds = idleSecondsForScheduler(idleSeconds)
+        let snapshot = scheduler.advance(to: now, idleSeconds: schedulerIdleSeconds)
         apply(snapshot: snapshot, now: now, idleSeconds: idleSeconds)
         processWellnessReminders(now: now, idleSeconds: idleSeconds)
     }
@@ -348,6 +350,16 @@ final class AppModel: ObservableObject {
         if snapshot.breakJustEnded, let kind = snapshot.completedBreakKind {
             breakStats = breakStatsStore.recordBreak(kind: kind, on: now)
         }
+    }
+
+    private func idleSecondsForScheduler(_ idleSeconds: TimeInterval) -> TimeInterval {
+        let threshold = settings.scheduleSettings.idleResetThreshold
+        if idleSeconds < threshold {
+            hasObservedActivityForIdleReset = true
+            return idleSeconds
+        }
+
+        return hasObservedActivityForIdleReset ? idleSeconds : 0
     }
 
     private func startTimer() {

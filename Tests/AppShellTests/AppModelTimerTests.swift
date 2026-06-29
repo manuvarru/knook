@@ -5,8 +5,12 @@ import XCTest
 
 @MainActor
 final class AppModelTimerTests: XCTestCase {
-    private struct MockActivityMonitor: ActivityMonitoring {
+    private final class MockActivityMonitor: ActivityMonitoring, @unchecked Sendable {
         var idleSeconds: TimeInterval
+
+        init(idleSeconds: TimeInterval) {
+            self.idleSeconds = idleSeconds
+        }
     }
 
     private final class MockWindowCoordinator: WindowCoordinator {
@@ -85,6 +89,45 @@ final class AppModelTimerTests: XCTestCase {
 
         model.tick(now: start.addingTimeInterval(1))
         XCTAssertEqual(model.appState.countdownText, "01:59")
+    }
+
+    func testHighInitialIdleReadingDoesNotFreezeTimerAtLaunch() throws {
+        let coordinator = MockWindowCoordinator()
+        let activityMonitor = MockActivityMonitor(idleSeconds: 600)
+        let model = try makeModel(
+            workInterval: 20 * 60,
+            breakDuration: 20,
+            activityMonitor: activityMonitor,
+            windowCoordinator: coordinator
+        )
+        let start = Date(timeIntervalSinceReferenceDate: 1_000)
+
+        model.handleAppDidFinishLaunching(now: start)
+        XCTAssertEqual(model.appState.countdownText, "20:00")
+
+        model.tick(now: start.addingTimeInterval(1))
+        XCTAssertEqual(model.appState.countdownText, "19:59")
+    }
+
+    func testIdleResetAppliesAfterActivityWasObserved() throws {
+        let coordinator = MockWindowCoordinator()
+        let activityMonitor = MockActivityMonitor(idleSeconds: 0)
+        let model = try makeModel(
+            workInterval: 20 * 60,
+            breakDuration: 20,
+            activityMonitor: activityMonitor,
+            windowCoordinator: coordinator
+        )
+        let start = Date(timeIntervalSinceReferenceDate: 1_000)
+
+        model.handleAppDidFinishLaunching(now: start)
+        model.tick(now: start.addingTimeInterval(1))
+
+        activityMonitor.idleSeconds = 600
+        model.tick(now: start.addingTimeInterval(600))
+
+        XCTAssertEqual(model.appState.countdownText, "20:00")
+        XCTAssertNil(model.appState.activeBreak)
     }
 
     func testBreakPhaseCountdownDecreasesEveryTick() throws {
@@ -189,6 +232,7 @@ final class AppModelTimerTests: XCTestCase {
     private func makeModel(
         workInterval: TimeInterval,
         breakDuration: TimeInterval,
+        activityMonitor: MockActivityMonitor = MockActivityMonitor(idleSeconds: 0),
         windowCoordinator: MockWindowCoordinator
     ) throws -> AppModel {
         var settings = completedSettings()
@@ -199,7 +243,7 @@ final class AppModelTimerTests: XCTestCase {
 
         return AppModel(
             settingsStore: store,
-            activityMonitor: MockActivityMonitor(idleSeconds: 0),
+            activityMonitor: activityMonitor,
             windowCoordinator: windowCoordinator,
             launchConfiguration: AppLaunchConfiguration(forceOnboarding: false),
             startsTimer: false,
