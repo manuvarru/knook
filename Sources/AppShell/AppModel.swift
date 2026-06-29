@@ -35,6 +35,7 @@ final class AppModel: ObservableObject {
 
     private var timerCancellable: AnyCancellable?
     private var wakeObserver: NSObjectProtocol?
+    private var sessionActiveObserver: NSObjectProtocol?
     private var updateStateCancellable: AnyCancellable?
     private var hasHandledInitialAppLaunch = false
     private var lastTickDate: Date?
@@ -247,6 +248,13 @@ final class AppModel: ObservableObject {
         apply(snapshot: snapshot, now: now, idleSeconds: activityMonitor.idleSeconds)
     }
 
+    func resetTimerAfterSystemResume(now: Date = Date()) {
+        guard launchPhase == .ready else { return }
+        let snapshot = scheduler.resetTimer(at: now, reason: "Timer azzerato dopo riattivazione del Mac")
+        apply(snapshot: snapshot, now: now, idleSeconds: activityMonitor.idleSeconds)
+        wellnessReminderEngine.reset(at: now)
+    }
+
     func saveSettings() {
         do {
             try settingsStore.save(settings)
@@ -343,7 +351,17 @@ final class AppModel: ObservableObject {
             queue: .main
         ) { [weak self] _ in
             Task { @MainActor [weak self] in
-                self?.tick(now: Date())
+                self?.resetTimerAfterSystemResume(now: Date())
+            }
+        }
+
+        sessionActiveObserver = NotificationCenter.default.addObserver(
+            forName: .knookSessionDidBecomeActive,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.resetTimerAfterSystemResume(now: Date())
             }
         }
     }

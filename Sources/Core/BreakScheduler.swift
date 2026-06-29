@@ -219,6 +219,20 @@ public final class BreakScheduler: @unchecked Sendable {
         return snapshot(now: now, breakJustStarted: false, breakJustEnded: false)
     }
 
+    public func resetTimer(at now: Date, reason: String = "Timer azzerato") -> Snapshot {
+        let hadActiveBreak = activeBreak != nil
+        automaticPauseState = nil
+        isPaused = false
+        pauseReason = nil
+        manualPauseRemainingUntilBreak = nil
+        postponedUntil = nil
+        activeBreak = nil
+        idleResetApplied = true
+        nextBreakDate = isWithinOfficeHours(now) ? now.addingTimeInterval(settings.breakSettings.workInterval) : nil
+        statusText = reason
+        return snapshot(now: now, breakJustStarted: false, breakJustEnded: hadActiveBreak)
+    }
+
     public func currentState(now: Date) -> AppState {
         snapshot(now: now, breakJustStarted: false, breakJustEnded: false).state
     }

@@ -16,4 +16,5 @@ public final class ActivityMonitor: ActivityMonitoring, @unchecked Sendable {
 public extension Notification.Name {
     static let knookSystemWillSleep = NSWorkspace.willSleepNotification
     static let knookSystemDidWake = NSWorkspace.didWakeNotification
+    static let knookSessionDidBecomeActive = NSWorkspace.sessionDidBecomeActiveNotification
 }

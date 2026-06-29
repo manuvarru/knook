@@ -117,6 +117,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
     public var longBreakCadence: Int
     public var longBreaksEnabled: Bool
     public var allowEarlyEnd: Bool
+    public var showSkipButton: Bool
     public var skipPolicy: SkipPolicy
     public var customMessages: [String]
     public var selectedSound: BreakSound
@@ -131,6 +132,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         longBreakCadence: Int,
         longBreaksEnabled: Bool,
         allowEarlyEnd: Bool,
+        showSkipButton: Bool = true,
         skipPolicy: SkipPolicy,
         customMessages: [String],
         selectedSound: BreakSound,
@@ -144,6 +146,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         self.longBreakCadence = longBreakCadence
         self.longBreaksEnabled = longBreaksEnabled
         self.allowEarlyEnd = allowEarlyEnd
+        self.showSkipButton = showSkipButton
         self.skipPolicy = skipPolicy
         self.customMessages = customMessages
         self.selectedSound = selectedSound
@@ -159,6 +162,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         longBreakCadence: 3,
         longBreaksEnabled: true,
         allowEarlyEnd: true,
+        showSkipButton: true,
         skipPolicy: .balanced,
         customMessages: [
             "Guarda lontano nella stanza e rilassa lo sguardo.",
@@ -192,6 +196,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         case longBreakCadence
         case longBreaksEnabled
         case allowEarlyEnd
+        case showSkipButton
         case skipPolicy
         case customMessages
         case selectedSound
@@ -209,6 +214,7 @@ public struct BreakSettings: Codable, Hashable, Sendable {
             longBreakCadence: try container.decodeIfPresent(Int.self, forKey: .longBreakCadence) ?? Self.default.longBreakCadence,
             longBreaksEnabled: try container.decodeIfPresent(Bool.self, forKey: .longBreaksEnabled) ?? Self.default.longBreaksEnabled,
             allowEarlyEnd: try container.decodeIfPresent(Bool.self, forKey: .allowEarlyEnd) ?? Self.default.allowEarlyEnd,
+            showSkipButton: try container.decodeIfPresent(Bool.self, forKey: .showSkipButton) ?? Self.default.showSkipButton,
             skipPolicy: try container.decodeIfPresent(SkipPolicy.self, forKey: .skipPolicy) ?? Self.default.skipPolicy,
             customMessages: try container.decodeIfPresent([String].self, forKey: .customMessages) ?? Self.default.customMessages,
             selectedSound: try container.decodeIfPresent(BreakSound.self, forKey: .selectedSound) ?? Self.default.selectedSound,
@@ -562,7 +568,7 @@ public struct ContextualEducationState: Codable, Hashable, Sendable {
 }
 
 public struct AppSettings: Codable, Hashable, Sendable {
-    public static let currentSchemaVersion = 5
+    public static let currentSchemaVersion = 6
 
     public var schemaVersion: Int
     public var breakSettings: BreakSettings

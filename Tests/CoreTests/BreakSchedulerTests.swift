@@ -88,6 +88,22 @@ final class BreakSchedulerTests: XCTestCase {
         XCTAssertNil(snapshot.state.activeBreak)
     }
 
+    func testResetTimerStartsFreshIntervalAfterSystemResume() {
+        var settings = AppSettings.default
+        settings.breakSettings.workInterval = 60
+        let scheduler = BreakScheduler(settings: settings)
+        let start = Date(timeIntervalSinceReferenceDate: 1000)
+
+        _ = scheduler.advance(to: start, idleSeconds: 0)
+        let reset = scheduler.resetTimer(at: start.addingTimeInterval(55), reason: "Timer azzerato dopo riattivazione del Mac")
+        let stillWaiting = scheduler.advance(to: start.addingTimeInterval(114), idleSeconds: 0)
+        let breakStarts = scheduler.advance(to: start.addingTimeInterval(115), idleSeconds: 0)
+
+        XCTAssertEqual(reset.state.nextBreakDate, start.addingTimeInterval(115))
+        XCTAssertNil(stillWaiting.state.activeBreak)
+        XCTAssertTrue(breakStarts.breakJustStarted)
+    }
+
     func testOfficeHoursBlockBreaksOutsideSchedule() {
         var settings = AppSettings.default
         settings.breakSettings.workInterval = 60

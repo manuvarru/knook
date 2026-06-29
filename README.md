@@ -28,6 +28,8 @@ Questo fork parte dalla base `v0.3.1` dell'app originale e aggiunge localizzazio
 - schermata pausa con supporto allo sfondo attuale di macOS e blur opzionale
 - preset colore disabilitati quando e attivo lo sfondo del Mac
 - overlay di pausa piu coprente e meno aggirabile tramite uscita normale
+- opzione per nascondere i pulsanti `Salta` e `Termina prima`, lasciando solo messaggio e conto alla rovescia
+- reset del timer quando il Mac si riattiva o la sessione torna attiva, per evitare pause immediate dopo sleep o blocco schermo
 - icona macOS rigenerata per riempire correttamente il contenitore
 
 ## Funzionalita
@@ -39,8 +41,10 @@ Knook Ita include:
 - promemoria prima della pausa
 - overlay a schermo intero per la pausa
 - controlli per posticipare, saltare o mettere in pausa, secondo le impostazioni
+- modalita pausa senza pulsanti, con solo messaggio e timeout obbligatorio
 - fasce orarie di lavoro
 - reset automatico dopo inattivita
+- reset automatico dopo riattivazione del Mac o sblocco sessione
 - avvio al login
 - pausa intelligente durante il focus a schermo intero
 - statistiche e log attivita locali

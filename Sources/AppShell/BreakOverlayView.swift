@@ -38,20 +38,24 @@ struct BreakOverlayView: View {
                     .monospacedDigit()
                     .foregroundStyle(.white.opacity(0.6))
 
-                HStack(spacing: 14) {
-                    if model.settings.breakSettings.allowEarlyEnd {
-                        Button("Termina prima") {
-                            model.endBreakEarly()
+                if model.settings.breakSettings.allowEarlyEnd || model.settings.breakSettings.showSkipButton {
+                    HStack(spacing: 14) {
+                        if model.settings.breakSettings.allowEarlyEnd {
+                            Button("Termina prima") {
+                                model.endBreakEarly()
+                            }
+                            .buttonStyle(OverlayButtonStyle(filled: true))
                         }
-                        .buttonStyle(OverlayButtonStyle(filled: true))
-                    }
 
-                    Button("Salta") {
-                        model.skipCurrentBreak()
+                        if model.settings.breakSettings.showSkipButton {
+                            Button("Salta") {
+                                model.skipCurrentBreak()
+                            }
+                            .buttonStyle(OverlayButtonStyle(filled: false))
+                        }
                     }
-                    .buttonStyle(OverlayButtonStyle(filled: false))
+                    .padding(.top, 8)
                 }
-                .padding(.top, 8)
             }
             .offset(y: contentVisible ? 0 : 20)
             .opacity(contentVisible ? 1 : 0)

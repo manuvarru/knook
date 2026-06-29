@@ -275,8 +275,16 @@ private struct BreaksSettingsPane: View {
                         model.saveSettings()
                     }
                 ))
+
+                Toggle("Mostra il tasto Salta nella schermata pausa", isOn: Binding(
+                    get: { model.settings.breakSettings.showSkipButton },
+                    set: { newValue in
+                        model.settings.breakSettings.showSkipButton = newValue
+                        model.saveSettings()
+                    }
+                ))
             } footer: {
-                Text("Flessibile: salta quando vuoi. Bilanciata: salta dopo 8 secondi. Rigorosa: non puoi saltare.")
+                Text("Disattiva entrambi i controlli per mostrare solo messaggio e conto alla rovescia. Flessibile: salta quando vuoi. Bilanciata: salta dopo 8 secondi. Rigorosa: non puoi saltare.")
             }
 
             Section {
