@@ -250,7 +250,7 @@ public final class BreakScheduler: @unchecked Sendable {
     private func beginBreak(at now: Date) {
         let kind = nextBreakKind
         let duration = kind == .long ? settings.breakSettings.longBreakDuration : settings.breakSettings.microBreakDuration
-        let message = settings.breakSettings.customMessages.randomElement() ?? "Fai riposare gli occhi per un momento."
+        let message = settings.breakSettings.message(for: kind)
         let skipAvailableAfter: Date?
         switch settings.breakSettings.skipPolicy {
         case .casual:

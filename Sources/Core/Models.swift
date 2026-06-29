@@ -111,6 +111,23 @@ public struct OfficeHoursRule: Codable, Hashable, Sendable, Identifiable {
 }
 
 public struct BreakSettings: Codable, Hashable, Sendable {
+    public static let microBreakMessages = [
+        "Guarda lontano nella stanza e rilassa lo sguardo.",
+        "Sbatti lentamente le palpebre e lascia riposare gli occhi.",
+        "Raddrizza la schiena, abbassa le spalle e rilassa il collo.",
+        "Allenta la mandibola e fai un respiro lento.",
+        "Controlla la postura: piedi appoggiati, spalle morbide, schermo alla giusta altezza.",
+    ]
+
+    public static let longBreakMessages = [
+        "Alzati dalla postazione e sgranchisci gambe, schiena e collo.",
+        "Fai qualche passo lontano dallo schermo e bevi un bicchiere d'acqua.",
+        "Muovi spalle, collo e schiena prima di tornare al lavoro.",
+        "Approfitta della pausa per andare in bagno o prendere qualcosa da bere.",
+        "Stacca davvero: alzati, cammina un po' e lascia riposare tutto il corpo.",
+        "Se hai fame, prendi uno spuntino leggero lontano dalla scrivania.",
+    ]
+
     public var workInterval: TimeInterval
     public var microBreakDuration: TimeInterval
     public var longBreakDuration: TimeInterval
@@ -168,16 +185,18 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         showSkipButton: true,
         showBreakTitle: true,
         skipPolicy: .balanced,
-        customMessages: [
-            "Guarda lontano nella stanza e rilassa lo sguardo.",
-            "Abbassa le spalle e rilassa la mandibola.",
-            "Sbatti lentamente le palpebre e fai un respiro.",
-        ],
+        customMessages: microBreakMessages,
         selectedSound: .breeze,
         backgroundStyle: .dawn,
         useDesktopWallpaper: false,
         blurDesktopWallpaper: false
     )
+
+    private static let previousDefaultMessages = [
+        "Guarda lontano nella stanza e rilassa lo sguardo.",
+        "Abbassa le spalle e rilassa la mandibola.",
+        "Sbatti lentamente le palpebre e fai un respiro.",
+    ]
 
     private static let legacyMessageTranslations = [
         "Look across the room and relax your focus.": "Guarda lontano nella stanza e rilassa lo sguardo.",
@@ -185,12 +204,30 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         "Blink slowly a few times and take a breath.": "Sbatti lentamente le palpebre e fai un respiro.",
     ]
 
+    public func message(for kind: BreakKind) -> String {
+        let messages = messages(for: kind)
+        return messages.randomElement() ?? "Fai riposare gli occhi per un momento."
+    }
+
+    public func messages(for kind: BreakKind) -> [String] {
+        switch kind {
+        case .micro:
+            isUsingDefaultMessages ? Self.microBreakMessages : customMessages
+        case .long:
+            isUsingDefaultMessages ? Self.longBreakMessages : customMessages
+        }
+    }
+
     public func migrated() -> BreakSettings {
         var migrated = self
         migrated.customMessages = customMessages.map { message in
             Self.legacyMessageTranslations[message] ?? message
         }
         return migrated
+    }
+
+    private var isUsingDefaultMessages: Bool {
+        customMessages == Self.microBreakMessages || customMessages == Self.previousDefaultMessages
     }
 
     private enum CodingKeys: String, CodingKey {

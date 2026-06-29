@@ -29,6 +29,20 @@ final class BreakSchedulerTests: XCTestCase {
         XCTAssertEqual(snapshot.state.activeBreak?.kind, .micro)
     }
 
+    func testMicroBreakUsesPostureAndEyeCareMessages() {
+        var settings = AppSettings.default
+        settings.breakSettings.workInterval = 60
+        let scheduler = BreakScheduler(settings: settings)
+        let start = Date(timeIntervalSinceReferenceDate: 1000)
+
+        _ = scheduler.advance(to: start, idleSeconds: 0)
+        let snapshot = scheduler.advance(to: start.addingTimeInterval(60), idleSeconds: 0)
+
+        XCTAssertEqual(snapshot.state.activeBreak?.kind, .micro)
+        XCTAssertTrue(BreakSettings.microBreakMessages.contains(snapshot.state.activeBreak?.message ?? ""))
+        XCTAssertFalse(BreakSettings.longBreakMessages.contains(snapshot.state.activeBreak?.message ?? ""))
+    }
+
     func testLongBreakArrivesAfterConfiguredCadence() {
         var settings = AppSettings.default
         settings.breakSettings.workInterval = 60
@@ -46,6 +60,25 @@ final class BreakSchedulerTests: XCTestCase {
         let snapshot = scheduler.advance(to: start.addingTimeInterval(200), idleSeconds: 0)
 
         XCTAssertEqual(snapshot.state.activeBreak?.kind, .long)
+    }
+
+    func testLongBreakUsesStandUpMessages() {
+        var settings = AppSettings.default
+        settings.breakSettings.workInterval = 60
+        settings.breakSettings.microBreakDuration = 10
+        settings.breakSettings.longBreakDuration = 120
+        settings.breakSettings.longBreakCadence = 1
+        let scheduler = BreakScheduler(settings: settings)
+        let start = Date(timeIntervalSinceReferenceDate: 1000)
+
+        _ = scheduler.advance(to: start, idleSeconds: 0)
+        _ = scheduler.advance(to: start.addingTimeInterval(60), idleSeconds: 0)
+        _ = scheduler.advance(to: start.addingTimeInterval(70), idleSeconds: 0)
+        let snapshot = scheduler.advance(to: start.addingTimeInterval(130), idleSeconds: 0)
+
+        XCTAssertEqual(snapshot.state.activeBreak?.kind, .long)
+        XCTAssertTrue(BreakSettings.longBreakMessages.contains(snapshot.state.activeBreak?.message ?? ""))
+        XCTAssertFalse(BreakSettings.microBreakMessages.contains(snapshot.state.activeBreak?.message ?? ""))
     }
 
     func testPostponePushesTheNextBreakOut() {
