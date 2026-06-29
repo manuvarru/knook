@@ -284,15 +284,8 @@ private struct BreaksSettingsPane: View {
                     }
                 ))
 
-                Toggle("Mostra il titolo della pausa", isOn: Binding(
-                    get: { model.settings.breakSettings.showBreakTitle },
-                    set: { newValue in
-                        model.settings.breakSettings.showBreakTitle = newValue
-                        model.saveSettings()
-                    }
-                ))
             } footer: {
-                Text("Disattiva i controlli e il titolo per mostrare solo messaggio e conto alla rovescia. Flessibile: salta quando vuoi. Bilanciata: salta dopo 8 secondi. Rigorosa: non puoi saltare.")
+                Text("Flessibile: salta quando vuoi. Bilanciata: salta dopo 8 secondi. Rigorosa: non puoi saltare.")
             }
 
             Section {
@@ -404,6 +397,14 @@ private struct AppearanceSettingsPane: View {
             }
 
             Section {
+                Toggle("Mostra il titolo della pausa", isOn: Binding(
+                    get: { model.settings.breakSettings.showBreakTitle },
+                    set: { newValue in
+                        model.settings.breakSettings.showBreakTitle = newValue
+                        model.saveSettings()
+                    }
+                ))
+
                 Toggle("Usa lo sfondo del Mac", isOn: Binding(
                     get: { model.settings.breakSettings.useDesktopWallpaper },
                     set: { newValue in
