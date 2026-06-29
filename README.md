@@ -10,7 +10,7 @@
 
 Knook Ita e un fork di [knook](https://github.com/preetsuthar17/knook) mantenuto in italiano e adattato per un uso piu diretto su macOS. Vive nella barra menu, non mostra icona nel Dock, salva i dati in locale e aiuta a rispettare pause brevi e lunghe durante il lavoro.
 
-Questo fork parte dalla base `v0.3.1` dell'app originale e aggiunge localizzazione italiana, identita app separata, overlay di blocco piu solido, icona macOS corretta, opzioni per sfondo macOS, migrazione completa dai dati del progetto originale e aggiornamenti puntati al fork `manuvarru/knook`.
+Questo fork parte dalla base `v0.3.2` dell'app originale e aggiunge localizzazione italiana, identita app separata, overlay di blocco piu solido, icona macOS corretta, opzioni per sfondo macOS, migrazione completa dai dati del progetto originale e aggiornamenti puntati al fork `manuvarru/knook`.
 
 > Knook Ita e in sviluppo attivo. Alcuni dettagli di distribuzione, firma e notarizzazione possono ancora cambiare.
 

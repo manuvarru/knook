@@ -35,10 +35,12 @@ final class AppModel: ObservableObject {
 
     private var timerCancellable: AnyCancellable?
     private var wakeObserver: NSObjectProtocol?
+    private var screensWakeObserver: NSObjectProtocol?
     private var sessionActiveObserver: NSObjectProtocol?
     private var updateStateCancellable: AnyCancellable?
     private var hasHandledInitialAppLaunch = false
     private var lastTickDate: Date?
+    private let minimumResumeTickGapThreshold: TimeInterval = 60
 
     private lazy var settingsWindowController = SettingsWindowController()
     private lazy var onboardingFlowWindowController = OnboardingFlowWindowController()
@@ -154,6 +156,16 @@ final class AppModel: ObservableObject {
         if let lastTickDate, now.timeIntervalSince(lastTickDate) < 0.5 {
             return
         }
+
+        let resumeTickGapThreshold = max(
+            minimumResumeTickGapThreshold,
+            settings.scheduleSettings.idleResetThreshold
+        )
+        if let lastTickDate, now.timeIntervalSince(lastTickDate) >= resumeTickGapThreshold {
+            self.lastTickDate = now
+            resetTimerAfterSystemResume(now: now)
+            return
+        }
         lastTickDate = now
 
         let idleSeconds = activityMonitor.idleSeconds
@@ -250,6 +262,7 @@ final class AppModel: ObservableObject {
 
     func resetTimerAfterSystemResume(now: Date = Date()) {
         guard launchPhase == .ready else { return }
+        lastTickDate = now
         let snapshot = scheduler.resetTimer(at: now, reason: "Timer azzerato dopo riattivazione del Mac")
         apply(snapshot: snapshot, now: now, idleSeconds: activityMonitor.idleSeconds)
         wellnessReminderEngine.reset(at: now)
@@ -345,7 +358,7 @@ final class AppModel: ObservableObject {
     }
 
     private func bindSystemEvents() {
-        wakeObserver = NotificationCenter.default.addObserver(
+        wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(
             forName: .knookSystemDidWake,
             object: nil,
             queue: .main
@@ -355,7 +368,17 @@ final class AppModel: ObservableObject {
             }
         }
 
-        sessionActiveObserver = NotificationCenter.default.addObserver(
+        screensWakeObserver = NSWorkspace.shared.notificationCenter.addObserver(
+            forName: .knookScreensDidWake,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.resetTimerAfterSystemResume(now: Date())
+            }
+        }
+
+        sessionActiveObserver = NSWorkspace.shared.notificationCenter.addObserver(
             forName: .knookSessionDidBecomeActive,
             object: nil,
             queue: .main

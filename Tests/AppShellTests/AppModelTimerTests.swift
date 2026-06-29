@@ -159,7 +159,7 @@ final class AppModelTimerTests: XCTestCase {
         XCTAssertFalse(coordinator.isBreakOverlayVisible)
     }
 
-    func testDelayedTickStartsBreakUsingAbsoluteTime() throws {
+    func testLongTickGapResetsTimerInsteadOfStartingImmediateBreak() throws {
         let coordinator = MockWindowCoordinator()
         let model = try makeModel(
             workInterval: 60,
@@ -171,7 +171,17 @@ final class AppModelTimerTests: XCTestCase {
         model.handleAppDidFinishLaunching(now: start)
         model.tick(now: start.addingTimeInterval(300))
 
-        XCTAssertEqual(model.appState.timerPhase, .breakTime)
+        XCTAssertEqual(model.appState.timerPhase, .work)
+        XCTAssertNil(model.appState.activeBreak)
+        XCTAssertEqual(model.appState.nextBreakDate, start.addingTimeInterval(360))
+        XCTAssertEqual(coordinator.showBreakOverlayCalls, 0)
+
+        for offset in 301..<360 {
+            model.tick(now: start.addingTimeInterval(TimeInterval(offset)))
+        }
+        XCTAssertNil(model.appState.activeBreak)
+
+        model.tick(now: start.addingTimeInterval(360))
         XCTAssertNotNil(model.appState.activeBreak)
         XCTAssertEqual(coordinator.showBreakOverlayCalls, 1)
     }
