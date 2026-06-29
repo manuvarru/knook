@@ -7,9 +7,9 @@ public enum BreakKind: String, Codable, CaseIterable, Sendable {
     public var title: String {
         switch self {
         case .micro:
-            "Short Break"
+            "Pausa breve"
         case .long:
-            "Long Break"
+            "Pausa lunga"
         }
     }
 }
@@ -33,7 +33,14 @@ public enum SkipPolicy: String, Codable, CaseIterable, Sendable, Identifiable {
     }
 
     public var title: String {
-        rawValue.capitalized
+        switch self {
+        case .casual:
+            "Flessibile"
+        case .balanced:
+            "Bilanciata"
+        case .hardcore:
+            "Rigorosa"
+        }
     }
 }
 
@@ -53,6 +60,36 @@ public enum BreakBackgroundStyle: String, Codable, CaseIterable, Sendable, Ident
     case graphite
 
     public var id: String { rawValue }
+}
+
+public extension BreakSound {
+    var title: String {
+        switch self {
+        case .none:
+            "Nessuno"
+        case .breeze:
+            "Brezza"
+        case .glass:
+            "Vetro"
+        case .hero:
+            "Hero"
+        }
+    }
+}
+
+public extension BreakBackgroundStyle {
+    var title: String {
+        switch self {
+        case .dawn:
+            "Alba"
+        case .ocean:
+            "Oceano"
+        case .moss:
+            "Muschio"
+        case .graphite:
+            "Grafite"
+        }
+    }
 }
 
 public struct OfficeHoursRule: Codable, Hashable, Sendable, Identifiable {
@@ -84,6 +121,8 @@ public struct BreakSettings: Codable, Hashable, Sendable {
     public var customMessages: [String]
     public var selectedSound: BreakSound
     public var backgroundStyle: BreakBackgroundStyle
+    public var useDesktopWallpaper: Bool
+    public var blurDesktopWallpaper: Bool
 
     public init(
         workInterval: TimeInterval,
@@ -95,7 +134,9 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         skipPolicy: SkipPolicy,
         customMessages: [String],
         selectedSound: BreakSound,
-        backgroundStyle: BreakBackgroundStyle
+        backgroundStyle: BreakBackgroundStyle,
+        useDesktopWallpaper: Bool = false,
+        blurDesktopWallpaper: Bool = false
     ) {
         self.workInterval = workInterval
         self.microBreakDuration = microBreakDuration
@@ -107,6 +148,8 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         self.customMessages = customMessages
         self.selectedSound = selectedSound
         self.backgroundStyle = backgroundStyle
+        self.useDesktopWallpaper = useDesktopWallpaper
+        self.blurDesktopWallpaper = blurDesktopWallpaper
     }
 
     public static let `default` = BreakSettings(
@@ -118,13 +161,62 @@ public struct BreakSettings: Codable, Hashable, Sendable {
         allowEarlyEnd: true,
         skipPolicy: .balanced,
         customMessages: [
-            "Look across the room and relax your focus.",
-            "Drop your shoulders and unclench your jaw.",
-            "Blink slowly a few times and take a breath.",
+            "Guarda lontano nella stanza e rilassa lo sguardo.",
+            "Abbassa le spalle e rilassa la mandibola.",
+            "Sbatti lentamente le palpebre e fai un respiro.",
         ],
         selectedSound: .breeze,
-        backgroundStyle: .dawn
+        backgroundStyle: .dawn,
+        useDesktopWallpaper: false,
+        blurDesktopWallpaper: false
     )
+
+    private static let legacyMessageTranslations = [
+        "Look across the room and relax your focus.": "Guarda lontano nella stanza e rilassa lo sguardo.",
+        "Drop your shoulders and unclench your jaw.": "Abbassa le spalle e rilassa la mandibola.",
+        "Blink slowly a few times and take a breath.": "Sbatti lentamente le palpebre e fai un respiro.",
+    ]
+
+    public func migrated() -> BreakSettings {
+        var migrated = self
+        migrated.customMessages = customMessages.map { message in
+            Self.legacyMessageTranslations[message] ?? message
+        }
+        return migrated
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case workInterval
+        case microBreakDuration
+        case longBreakDuration
+        case longBreakCadence
+        case longBreaksEnabled
+        case allowEarlyEnd
+        case skipPolicy
+        case customMessages
+        case selectedSound
+        case backgroundStyle
+        case useDesktopWallpaper
+        case blurDesktopWallpaper
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            workInterval: try container.decodeIfPresent(TimeInterval.self, forKey: .workInterval) ?? Self.default.workInterval,
+            microBreakDuration: try container.decodeIfPresent(TimeInterval.self, forKey: .microBreakDuration) ?? Self.default.microBreakDuration,
+            longBreakDuration: try container.decodeIfPresent(TimeInterval.self, forKey: .longBreakDuration) ?? Self.default.longBreakDuration,
+            longBreakCadence: try container.decodeIfPresent(Int.self, forKey: .longBreakCadence) ?? Self.default.longBreakCadence,
+            longBreaksEnabled: try container.decodeIfPresent(Bool.self, forKey: .longBreaksEnabled) ?? Self.default.longBreaksEnabled,
+            allowEarlyEnd: try container.decodeIfPresent(Bool.self, forKey: .allowEarlyEnd) ?? Self.default.allowEarlyEnd,
+            skipPolicy: try container.decodeIfPresent(SkipPolicy.self, forKey: .skipPolicy) ?? Self.default.skipPolicy,
+            customMessages: try container.decodeIfPresent([String].self, forKey: .customMessages) ?? Self.default.customMessages,
+            selectedSound: try container.decodeIfPresent(BreakSound.self, forKey: .selectedSound) ?? Self.default.selectedSound,
+            backgroundStyle: try container.decodeIfPresent(BreakBackgroundStyle.self, forKey: .backgroundStyle) ?? Self.default.backgroundStyle,
+            useDesktopWallpaper: try container.decodeIfPresent(Bool.self, forKey: .useDesktopWallpaper) ?? Self.default.useDesktopWallpaper,
+            blurDesktopWallpaper: try container.decodeIfPresent(Bool.self, forKey: .blurDesktopWallpaper) ?? Self.default.blurDesktopWallpaper
+        )
+    }
 }
 
 public struct ScheduleSettings: Codable, Hashable, Sendable {
@@ -198,18 +290,18 @@ public enum WellnessReminderKind: String, Codable, CaseIterable, Sendable, Ident
     public var title: String {
         switch self {
         case .posture:
-            "Posture Check"
+            "Controllo postura"
         case .blink:
-            "Blink Reminder"
+            "Promemoria occhi"
         }
     }
 
     public var body: String {
         switch self {
         case .posture:
-            "Sit tall, relax your shoulders, and let your neck reset."
+            "Siediti dritto, rilassa le spalle e lascia riposare il collo."
         case .blink:
-            "Blink slowly a few times and soften your focus for a moment."
+            "Sbatti lentamente le palpebre e ammorbidisci lo sguardo per un momento."
         }
     }
 }
@@ -302,25 +394,25 @@ public enum OnboardingPreset: String, CaseIterable, Sendable {
 
     public var title: String {
         switch self {
-        case .eyeCare: "Eye care"
-        case .deepWork: "Deep work"
-        case .standingDesk: "Standing desk"
+        case .eyeCare: "Cura degli occhi"
+        case .deepWork: "Concentrazione profonda"
+        case .standingDesk: "Scrivania in piedi"
         }
     }
 
     public var description: String {
         switch self {
-        case .eyeCare: "20-20-20 rule. Every 20 minutes, look away for 20 seconds."
-        case .deepWork: "50 minutes of focus, then a 10-minute break."
-        case .standingDesk: "Move every 30 minutes with a 5-minute break."
+        case .eyeCare: "Regola 20-20-20. Ogni 20 minuti, guarda lontano per 20 secondi."
+        case .deepWork: "50 minuti di concentrazione, poi una pausa di 10 minuti."
+        case .standingDesk: "Muoviti ogni 30 minuti con una pausa di 5 minuti."
         }
     }
 
     public var subtitle: String {
         switch self {
-        case .eyeCare: "20 min work, 20 sec break"
-        case .deepWork: "50 min work, 10 min break"
-        case .standingDesk: "30 min work, 5 min break"
+        case .eyeCare: "20 min lavoro, 20 sec pausa"
+        case .deepWork: "50 min lavoro, 10 min pausa"
+        case .standingDesk: "30 min lavoro, 5 min pausa"
         }
     }
 
@@ -403,18 +495,18 @@ public enum HintKind: String, Codable, CaseIterable, Sendable, Identifiable {
     public var title: String {
         switch self {
         case .firstBreak:
-            "Skip or postpone"
+            "Salta o rimanda"
         case .firstWellness:
-            "Turn this off anytime"
+            "Disattivalo quando vuoi"
         }
     }
 
     public var body: String {
         switch self {
         case .firstBreak:
-            "If you need a little more time, you can postpone this break."
+            "Se ti serve ancora un po' di tempo, puoi rimandare questa pausa."
         case .firstWellness:
-            "Posture and blink reminders live in Settings whenever you want to change them."
+            "Puoi modificare i promemoria per postura e occhi dalle Impostazioni quando vuoi."
         }
     }
 
@@ -510,7 +602,7 @@ public struct AppSettings: Codable, Hashable, Sendable {
     public func migrated() -> AppSettings {
         AppSettings(
             schemaVersion: AppSettings.currentSchemaVersion,
-            breakSettings: breakSettings,
+            breakSettings: breakSettings.migrated(),
             scheduleSettings: scheduleSettings,
             smartPauseSettings: smartPauseSettings,
             wellnessSettings: wellnessSettings,

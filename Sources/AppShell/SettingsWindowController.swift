@@ -52,7 +52,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
             backing: .buffered,
             defer: false
         )
-        window.title = "knook Settings"
+        window.title = "Impostazioni Knook Ita"
         window.contentView = hostingView
         window.isReleasedWhenClosed = false
         window.contentMinSize = NSSize(width: 560, height: 380)

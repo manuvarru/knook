@@ -39,7 +39,7 @@ public final class BreakScheduler: @unchecked Sendable {
     private var lastKnownNow: Date?
     private var idleResetApplied = false
     private var manualPauseRemainingUntilBreak: TimeInterval?
-    private var statusText = "Preparing your first session"
+    private var statusText = "Preparo la tua prima sessione"
     private let smartPauseResumeGracePeriod: TimeInterval = 2 * 60
 
     public init(
@@ -75,7 +75,7 @@ public final class BreakScheduler: @unchecked Sendable {
         lastKnownNow = now
 
         if isPaused, automaticPauseState == nil, pauseReason != nil, activeBreak == nil {
-            statusText = pauseReason ?? "Paused"
+            statusText = pauseReason ?? "In pausa"
             return snapshot(now: now, breakJustStarted: false, breakJustEnded: false)
         }
 
@@ -86,13 +86,13 @@ public final class BreakScheduler: @unchecked Sendable {
         guard isWithinOfficeHours(now) else {
             activeBreak = nil
             nextBreakDate = nil
-            statusText = "Outside office hours"
+            statusText = "Fuori dall'orario di lavoro"
             return snapshot(now: now, breakJustStarted: false, breakJustEnded: hadActiveBreak)
         }
 
         if activeBreak == nil, let provider = pauseProviders.first(where: { $0.isPaused(at: now) }) {
             enterAutomaticPause(named: provider.name, now: now)
-            statusText = "Paused by \(provider.name)"
+            statusText = "In pausa: \(provider.name)"
             return snapshot(now: now, breakJustStarted: false, breakJustEnded: false)
         }
 
@@ -106,7 +106,7 @@ public final class BreakScheduler: @unchecked Sendable {
                 postponedUntil = nil
                 idleResetApplied = true
             }
-            statusText = "Timer reset after idle time"
+            statusText = "Timer azzerato dopo inattività"
         } else {
             idleResetApplied = false
         }
@@ -119,7 +119,7 @@ public final class BreakScheduler: @unchecked Sendable {
             }
 
             let remaining = breakSession.scheduledEnd.timeIntervalSince(now)
-            statusText = "\(breakSession.kind.title) in progress (\(remaining.countdownString) left)"
+            statusText = "\(breakSession.kind.title) in corso (\(remaining.countdownString) rimanenti)"
             return snapshot(now: now, breakJustStarted: false, breakJustEnded: false)
         }
 
@@ -132,7 +132,7 @@ public final class BreakScheduler: @unchecked Sendable {
         }
 
         guard let nextBreakDate else {
-            statusText = "Waiting for office hours"
+            statusText = "In attesa dell'orario di lavoro"
             return snapshot(now: now, breakJustStarted: false, breakJustEnded: false)
         }
 
@@ -141,7 +141,7 @@ public final class BreakScheduler: @unchecked Sendable {
             return snapshot(now: now, breakJustStarted: true, breakJustEnded: false)
         }
 
-        statusText = "Next break in \(nextBreakDate.timeIntervalSince(now).countdownString)"
+        statusText = "Prossima pausa tra \(nextBreakDate.timeIntervalSince(now).countdownString)"
         return snapshot(now: now, breakJustStarted: false, breakJustEnded: false)
     }
 
@@ -159,7 +159,7 @@ public final class BreakScheduler: @unchecked Sendable {
         let postponeDate = baseDate.addingTimeInterval(TimeInterval(minutes * 60))
         postponedUntil = postponeDate
         self.nextBreakDate = postponeDate
-        statusText = "Break postponed by \(minutes) minutes"
+        statusText = "Pausa rimandata di \(minutes) minuti"
         return snapshot(now: now, breakJustStarted: false, breakJustEnded: false)
     }
 
@@ -174,12 +174,12 @@ public final class BreakScheduler: @unchecked Sendable {
             }
             self.activeBreak = nil
             nextBreakDate = now.addingTimeInterval(settings.breakSettings.workInterval)
-            statusText = "Break skipped"
+            statusText = "Pausa saltata"
             return snapshot(now: now, breakJustStarted: false, breakJustEnded: true)
         }
 
         nextBreakDate = now.addingTimeInterval(settings.breakSettings.workInterval)
-        statusText = "Upcoming break skipped"
+        statusText = "Prossima pausa saltata"
         return snapshot(now: now, breakJustStarted: false, breakJustEnded: false)
     }
 
@@ -190,11 +190,11 @@ public final class BreakScheduler: @unchecked Sendable {
 
         let kind = breakSession.kind
         completeActiveBreak(at: now)
-        statusText = "Break ended early"
+        statusText = "Pausa terminata in anticipo"
         return snapshot(now: now, breakJustStarted: false, breakJustEnded: true, completedBreakKind: kind)
     }
 
-    public func pause(reason: String = "Manual Pause", now: Date) -> Snapshot {
+    public func pause(reason: String = "Pausa manuale", now: Date) -> Snapshot {
         automaticPauseState = nil
         isPaused = true
         pauseReason = reason
@@ -215,7 +215,7 @@ public final class BreakScheduler: @unchecked Sendable {
             }
         }
         manualPauseRemainingUntilBreak = nil
-        statusText = "Back on schedule"
+        statusText = "Di nuovo in programma"
         return snapshot(now: now, breakJustStarted: false, breakJustEnded: false)
     }
 
@@ -238,7 +238,7 @@ public final class BreakScheduler: @unchecked Sendable {
     private func beginBreak(at now: Date) {
         let kind = nextBreakKind
         let duration = kind == .long ? settings.breakSettings.longBreakDuration : settings.breakSettings.microBreakDuration
-        let message = settings.breakSettings.customMessages.randomElement() ?? "Rest your eyes for a moment."
+        let message = settings.breakSettings.customMessages.randomElement() ?? "Fai riposare gli occhi per un momento."
         let skipAvailableAfter: Date?
         switch settings.breakSettings.skipPolicy {
         case .casual:
@@ -259,7 +259,7 @@ public final class BreakScheduler: @unchecked Sendable {
         )
         postponedUntil = nil
         nextBreakDate = nil
-        statusText = "\(kind.title) started"
+        statusText = "\(kind.title) iniziata"
     }
 
     private func completeActiveBreak(at now: Date) {
@@ -275,7 +275,7 @@ public final class BreakScheduler: @unchecked Sendable {
         self.activeBreak = nil
         postponedUntil = nil
         nextBreakDate = now.addingTimeInterval(settings.breakSettings.workInterval)
-        statusText = "Nice work. Next break in \(settings.breakSettings.workInterval.countdownString)"
+        statusText = "Ottimo lavoro. Prossima pausa tra \(settings.breakSettings.workInterval.countdownString)"
     }
 
     private var nextBreakKind: BreakKind {

@@ -7,7 +7,7 @@ final class BreakSchedulerTests: XCTestCase {
         let name: String
         var isPauseActive: Bool
 
-        init(name: String = "Full-Screen Focus", isPauseActive: Bool = false) {
+        init(name: String = "app a schermo intero", isPauseActive: Bool = false) {
             self.name = name
             self.isPauseActive = isPauseActive
         }
@@ -101,7 +101,7 @@ final class BreakSchedulerTests: XCTestCase {
         let snapshot = scheduler.advance(to: outside, idleSeconds: 0)
 
         XCTAssertNil(snapshot.state.nextBreakDate)
-        XCTAssertEqual(snapshot.state.statusText, "Outside office hours")
+        XCTAssertEqual(snapshot.state.statusText, "Fuori dall'orario di lavoro")
     }
 
     @MainActor
@@ -117,7 +117,7 @@ final class BreakSchedulerTests: XCTestCase {
         let pausedBreak = scheduler.advance(to: start.addingTimeInterval(140), idleSeconds: 0)
 
         XCTAssertTrue(pausedSnapshot.state.isPaused)
-        XCTAssertEqual(pausedSnapshot.state.pauseReason, "Full-Screen Focus")
+        XCTAssertEqual(pausedSnapshot.state.pauseReason, "app a schermo intero")
         XCTAssertNil(pausedBreak.state.activeBreak)
         XCTAssertFalse(pausedBreak.breakJustStarted)
     }
@@ -130,12 +130,12 @@ final class BreakSchedulerTests: XCTestCase {
         let start = Date(timeIntervalSinceReferenceDate: 1_000)
 
         _ = scheduler.advance(to: start, idleSeconds: 0)
-        // Pause 40 seconds into the 120-second interval (80s remaining)
-        _ = scheduler.pause(reason: "Paused manually", now: start.addingTimeInterval(40))
-        // Resume 30 seconds later
+        // Metti in pausa 40 secondi dentro l'intervallo da 120 secondi (80s rimanenti).
+        _ = scheduler.pause(reason: "In pausa manualmente", now: start.addingTimeInterval(40))
+        // Riprendi 30 secondi dopo.
         let resumed = scheduler.resume(now: start.addingTimeInterval(70))
 
-        // Should still have 80s remaining from resume time → break at start+150
+        // Dovrebbero restare 80s dal momento della ripresa: pausa a start+150.
         XCTAssertEqual(resumed.state.nextBreakDate, start.addingTimeInterval(150))
         XCTAssertFalse(resumed.state.isPaused)
     }

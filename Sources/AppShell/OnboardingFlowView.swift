@@ -85,7 +85,7 @@ struct OnboardingFlowView: View {
         VStack(spacing: 24) {
             pauseIcon(size: 64, cornerRadius: 16, barWidth: 7, barHeight: 26, barSpacing: 8)
 
-            Text("Find your pause.")
+            Text("Trova la tua pausa.")
                 .font(.system(size: 42))
                 .fontWeight(.semibold)
                 .tracking(-1)
@@ -124,13 +124,13 @@ struct OnboardingFlowView: View {
             HStack(spacing: 14) {
                 pauseIcon(size: 44, cornerRadius: 10, barWidth: 6, barHeight: 20, barSpacing: 6)
 
-                Text("Choose your rhythm")
+                Text("Scegli il tuo ritmo")
                     .font(.title2)
                     .fontWeight(.medium)
                     .foregroundStyle(.white)
             }
 
-            Text("Pick a preset to get started. You can customize later in settings.")
+            Text("Scegli una configurazione per iniziare. Potrai personalizzarla più tardi nelle impostazioni.")
                 .font(.callout)
                 .foregroundStyle(.white.opacity(0.7))
 
@@ -185,7 +185,7 @@ struct OnboardingFlowView: View {
         VStack(spacing: 24) {
             pauseIcon(size: 64, cornerRadius: 16, barWidth: 7, barHeight: 26, barSpacing: 8)
 
-            Text("You're all set!")
+            Text("È tutto pronto!")
                 .font(.system(size: 42))
                 .fontWeight(.semibold)
                 .tracking(-1)
@@ -287,4 +287,3 @@ private struct GlassChipModifier: ViewModifier {
             )
     }
 }
-

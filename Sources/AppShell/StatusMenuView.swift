@@ -26,26 +26,26 @@ struct StatusMenuView: View {
         switch model.updateState {
         case let .available(version, releaseURL):
             VStack(alignment: .leading, spacing: 10) {
-                Text("knook \(version) is available")
+                Text("Knook Ita \(version) è disponibile")
                     .font(.headline)
 
-                Text("Update with Homebrew or open the latest GitHub release if Homebrew is unavailable.")
+                Text("Aggiorna con Homebrew oppure apri l'ultima release GitHub se Homebrew non è disponibile.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
 
                 HStack(spacing: 8) {
-                    Button("Update") {
+                    Button("Aggiorna") {
                         model.installAvailableUpdate()
                     }
                     .buttonStyle(.borderedProminent)
 
-                    Button("Later") {
+                    Button("Più tardi") {
                         model.dismissUpdateNotice()
                     }
                     .buttonStyle(.bordered)
 
                     if let releaseURL {
-                        Link("View Release", destination: releaseURL)
+                        Link("Vedi release", destination: releaseURL)
                             .font(.footnote)
                     }
                 }
@@ -57,7 +57,7 @@ struct StatusMenuView: View {
             HStack(spacing: 10) {
                 ProgressView()
                     .controlSize(.small)
-                Text("Preparing update…")
+                Text("Preparazione aggiornamento...")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -77,14 +77,14 @@ struct StatusMenuView: View {
             HStack(spacing: 10) {
                 Image(systemName: "checkmark.circle.fill")
                     .foregroundStyle(.green)
-                Text("Update installed! Relaunching…")
+                Text("Aggiornamento installato. Riavvio...")
                     .font(.subheadline)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
         case let .error(message):
             VStack(alignment: .leading, spacing: 8) {
-                Text("Update failed")
+                Text("Aggiornamento non riuscito")
                     .font(.headline)
                 Text(message)
                     .font(.subheadline)
@@ -92,18 +92,18 @@ struct StatusMenuView: View {
                     .lineLimit(4)
 
                 HStack(spacing: 8) {
-                    Button("Try Again") {
+                    Button("Riprova") {
                         model.checkForUpdates()
                     }
                     .buttonStyle(.borderedProminent)
 
-                    Button("Show in Terminal") {
+                    Button("Mostra nel Terminale") {
                         model.retryUpdateInTerminal()
                         dismiss()
                     }
                     .buttonStyle(.bordered)
 
-                    Button("Dismiss") {
+                    Button("Chiudi") {
                         model.dismissUpdateNotice()
                     }
                     .buttonStyle(.bordered)
@@ -128,7 +128,7 @@ struct StatusMenuView: View {
 
     private var setupMenu: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Start with the recommended setup or adjust it before you begin.")
+            Text("Inizia con la configurazione consigliata oppure modificala prima di partire.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .padding(.horizontal, 12)
@@ -136,19 +136,19 @@ struct StatusMenuView: View {
 
             Divider().padding(.vertical, 4)
 
-            PopoverMenuRow(title: "Start Using knook", systemImage: "play.fill") {
+            PopoverMenuRow(title: "Inizia a usare Knook Ita", systemImage: "play.fill") {
                 model.dismissStarterSetupWithDefaults()
                 dismiss()
             }
 
-            PopoverMenuRow(title: "Check for Updates", systemImage: "arrow.down.circle") {
+            PopoverMenuRow(title: "Cerca aggiornamenti", systemImage: "arrow.down.circle") {
                 model.checkForUpdates()
                 dismiss()
             }
 
             Divider().padding(.vertical, 4)
 
-            PopoverMenuRow(title: "Quit", systemImage: "power", isLast: true) {
+            PopoverMenuRow(title: "Esci", systemImage: "power", isLast: true) {
                 NSApplication.shared.terminate(nil)
             }
         }
@@ -165,9 +165,9 @@ struct StatusMenuView: View {
                 .padding(.vertical, 8)
 
             HStack(spacing: 12) {
-                Label("\(model.breakStats.todayCount()) today", systemImage: "cup.and.saucer")
+                Label("\(model.breakStats.todayCount()) oggi", systemImage: "cup.and.saucer")
                 if model.breakStats.currentStreak > 0 {
-                    Label("\(model.breakStats.currentStreak)-day streak", systemImage: "flame")
+                    Label("Serie di \(model.breakStats.currentStreak) giorni", systemImage: "flame")
                 }
             }
             .font(.caption)
@@ -177,23 +177,23 @@ struct StatusMenuView: View {
 
             Divider().padding(.vertical, 4)
 
-            PopoverMenuRow(title: "Start Break Now", systemImage: "cup.and.saucer") {
+            PopoverMenuRow(title: "Avvia pausa ora", systemImage: "cup.and.saucer") {
                 model.startBreakNow()
                 dismiss()
             }
 
-            PopoverMenuRow(title: "Postpone 5 Minutes", systemImage: "clock.arrow.circlepath") {
+            PopoverMenuRow(title: "Rimanda di 5 minuti", systemImage: "clock.arrow.circlepath") {
                 model.postpone(minutes: 5)
                 dismiss()
             }
 
-            PopoverMenuRow(title: "Postpone 15 Minutes", systemImage: "clock.arrow.circlepath") {
+            PopoverMenuRow(title: "Rimanda di 15 minuti", systemImage: "clock.arrow.circlepath") {
                 model.postpone(minutes: 15)
                 dismiss()
             }
 
             PopoverMenuRow(
-                title: model.appState.isPaused ? "Resume Reminders" : "Pause Reminders",
+                title: model.appState.isPaused ? "Riprendi promemoria" : "Metti in pausa promemoria",
                 systemImage: model.appState.isPaused ? "play.circle" : "pause.circle"
             ) {
                 model.pauseOrResume()
@@ -201,30 +201,30 @@ struct StatusMenuView: View {
             }
 
             if model.appState.activeBreak != nil {
-                PopoverMenuRow(title: "Skip Current Break", systemImage: "forward.end") {
+                PopoverMenuRow(title: "Salta pausa attuale", systemImage: "forward.end") {
                     model.skipCurrentBreak()
                     dismiss()
                 }
 
-                PopoverMenuRow(title: "End Break Early", systemImage: "stop.circle") {
+                PopoverMenuRow(title: "Termina pausa prima", systemImage: "stop.circle") {
                     model.endBreakEarly()
                     dismiss()
                 }
             }
 
-            PopoverMenuRow(title: "Open Settings", systemImage: "gearshape") {
+            PopoverMenuRow(title: "Apri impostazioni", systemImage: "gearshape") {
                 model.openSettings()
                 dismiss()
             }
 
-            PopoverMenuRow(title: "Check for Updates", systemImage: "arrow.down.circle") {
+            PopoverMenuRow(title: "Cerca aggiornamenti", systemImage: "arrow.down.circle") {
                 model.checkForUpdates()
                 dismiss()
             }
 
             Divider().padding(.vertical, 4)
 
-            PopoverMenuRow(title: "Quit", systemImage: "power", isLast: true) {
+            PopoverMenuRow(title: "Esci", systemImage: "power", isLast: true) {
                 NSApplication.shared.terminate(nil)
             }
         }

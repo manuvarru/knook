@@ -6,7 +6,7 @@ script_dir=${0:A:h}
 repo_root=${script_dir:h:h}
 
 version=${1:-${KNOOK_VERSION:-}}
-app_path=${2:-${KNOOK_APP_PATH:-"${repo_root}/build/export/knook.app"}}
+app_path=${2:-${KNOOK_APP_PATH:-"${repo_root}/build/export/Knook Ita.app"}}
 
 if [[ -z "${version}" ]]; then
   echo "Usage: ${0} <version> [app-path]" >&2
@@ -20,16 +20,16 @@ fi
 
 output_dir="${repo_root}/build"
 staging_dir="${output_dir}/dmg"
-output_dmg="${output_dir}/knook-${version}.dmg"
+output_dmg="${output_dir}/Knook-Ita-${version}.dmg"
 
 rm -rf "${staging_dir}"
 mkdir -p "${staging_dir}"
-cp -R "${app_path}" "${staging_dir}/knook.app"
+cp -R "${app_path}" "${staging_dir}/Knook Ita.app"
 ln -s /Applications "${staging_dir}/Applications"
 rm -f "${output_dmg}"
 
 hdiutil create \
-  -volname "knook" \
+  -volname "Knook Ita" \
   -srcfolder "${staging_dir}" \
   -ov \
   -format UDZO \

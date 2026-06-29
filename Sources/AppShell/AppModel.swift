@@ -235,7 +235,7 @@ final class AppModel: ObservableObject {
         if appState.isPaused {
             snapshot = scheduler.resume(now: now)
         } else {
-            snapshot = scheduler.pause(reason: "Paused manually", now: now)
+            snapshot = scheduler.pause(reason: "In pausa manualmente", now: now)
         }
         apply(snapshot: snapshot, now: now, idleSeconds: activityMonitor.idleSeconds)
     }
@@ -360,7 +360,7 @@ final class AppModel: ObservableObject {
         do {
             try launchAtLoginController.setEnabled(settings.scheduleSettings.launchAtLogin)
         } catch {
-            settingsError = "Launch at login could not be updated: \(error.localizedDescription)"
+            settingsError = "Non è stato possibile aggiornare l'avvio al login: \(error.localizedDescription)"
         }
     }
 
@@ -510,7 +510,7 @@ final class AppModel: ObservableObject {
             activeBreak: nil,
             isPaused: false,
             pauseReason: nil,
-            statusText: "Finish setup to start your break rhythm"
+            statusText: "Completa la configurazione per iniziare il tuo ritmo di pause"
         )
     }
 

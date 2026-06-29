@@ -22,9 +22,9 @@ struct BrewUpdateRunner: BrewUpdateRunning {
         var fullLog = ""
 
         let steps: [(label: String, args: [String], allowFailure: Bool)] = [
-            ("Refreshing tap…", ["untap", "preetsuthar17/tap"], true),
-            ("Refreshing tap…", ["tap", "preetsuthar17/tap"], false),
-            ("Updating Homebrew…", ["update"], false),
+            ("Aggiornamento tap...", ["untap", "preetsuthar17/tap"], true),
+            ("Aggiornamento tap...", ["tap", "preetsuthar17/tap"], false),
+            ("Aggiornamento Homebrew...", ["update"], false),
         ]
 
         for step in steps {
@@ -38,23 +38,23 @@ struct BrewUpdateRunner: BrewUpdateRunning {
         }
 
         // Install step: try upgrade first, fall back to install
-        await onProgress("Installing knook…")
+        await onProgress("Installazione Knook Ita...")
         let upgradeResult = runProcess(executablePath: brewPath, arguments: ["upgrade", "--cask", "knook"])
-        fullLog += "=== Installing knook… [upgrade --cask knook] ===\n\(upgradeResult.output)\n"
+        fullLog += "=== Installazione Knook Ita... [upgrade --cask knook] ===\n\(upgradeResult.output)\n"
 
         if upgradeResult.exitCode != 0 {
             let installResult = runProcess(executablePath: brewPath, arguments: ["install", "--cask", "knook"])
-            fullLog += "=== Installing knook… [install --cask knook] ===\n\(installResult.output)\n"
+            fullLog += "=== Installazione Knook Ita... [install --cask knook] ===\n\(installResult.output)\n"
 
             if installResult.exitCode != 0 {
-                return .failure(step: "Installing knook…", log: fullLog)
+                return .failure(step: "Installazione Knook Ita...", log: fullLog)
             }
         }
 
         // Verify the installed version matches what we expected
-        await onProgress("Verifying update…")
+        await onProgress("Verifica aggiornamento...")
         let infoResult = runProcess(executablePath: brewPath, arguments: ["list", "--cask", "--versions", "knook"])
-        fullLog += "=== Verifying update… [list --cask --versions knook] ===\n\(infoResult.output)\n"
+        fullLog += "=== Verifica aggiornamento... [list --cask --versions knook] ===\n\(infoResult.output)\n"
 
         let installedVersion = infoResult.output
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -63,8 +63,8 @@ struct BrewUpdateRunner: BrewUpdateRunning {
 
         if installedVersion != expectedVersion {
             return .failure(
-                step: "Verifying update…",
-                log: fullLog + "\nExpected version \(expectedVersion) but found \(installedVersion)."
+                step: "Verifica aggiornamento...",
+                log: fullLog + "\nVersione attesa \(expectedVersion), trovata \(installedVersion)."
             )
         }
 
@@ -85,7 +85,7 @@ struct BrewUpdateRunner: BrewUpdateRunning {
             try process.run()
             process.waitUntilExit()
         } catch {
-            return (-1, "Failed to launch process: \(error.localizedDescription)")
+            return (-1, "Impossibile avviare il processo: \(error.localizedDescription)")
         }
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()

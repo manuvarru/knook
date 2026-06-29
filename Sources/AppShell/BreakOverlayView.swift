@@ -1,3 +1,4 @@
+import AppKit
 import Core
 import SwiftUI
 
@@ -12,7 +13,13 @@ struct BreakOverlayView: View {
 
     var body: some View {
         ZStack {
-            BreakBackgroundView(style: session.backgroundStyle)
+            if model.settings.breakSettings.useDesktopWallpaper {
+                DesktopWallpaperBackgroundView(
+                    isBlurred: model.settings.breakSettings.blurDesktopWallpaper
+                )
+            } else {
+                BreakBackgroundView(style: session.backgroundStyle)
+            }
 
             VStack(spacing: 20) {
                 Text(session.kind.title)
@@ -26,20 +33,20 @@ struct BreakOverlayView: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: 600)
 
-                Text("Break ends in \(remainingText)")
+                Text("La pausa termina tra \(remainingText)")
                     .font(.system(size: 17, weight: .medium))
                     .monospacedDigit()
                     .foregroundStyle(.white.opacity(0.6))
 
                 HStack(spacing: 14) {
                     if model.settings.breakSettings.allowEarlyEnd {
-                        Button("End Early") {
+                        Button("Termina prima") {
                             model.endBreakEarly()
                         }
                         .buttonStyle(OverlayButtonStyle(filled: true))
                     }
 
-                    Button("Skip") {
+                    Button("Salta") {
                         model.skipCurrentBreak()
                     }
                     .buttonStyle(OverlayButtonStyle(filled: false))
@@ -55,6 +62,124 @@ struct BreakOverlayView: View {
                 contentVisible = true
             }
         }
+    }
+}
+
+private struct DesktopWallpaperBackgroundView: View {
+    let isBlurred: Bool
+    @State private var wallpaperImage: NSImage?
+
+    var body: some View {
+        GeometryReader { geo in
+            ZStack {
+                if let wallpaperImage {
+                    Image(nsImage: wallpaperImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geo.size.width, height: geo.size.height)
+                        .clipped()
+                        .blur(radius: isBlurred ? 18 : 0)
+                        .scaleEffect(isBlurred ? 1.04 : 1)
+                } else {
+                    Color.black
+                }
+
+                Color.black.opacity(isBlurred ? 0.28 : 0.38)
+            }
+            .task {
+                wallpaperImage = Self.loadWallpaperImage()
+            }
+        }
+    }
+
+    private static func loadWallpaperImage() -> NSImage? {
+        for url in wallpaperCandidateURLs() {
+            if let image = NSImage(contentsOf: url) {
+                return image
+            }
+        }
+        return nil
+    }
+
+    private static func wallpaperCandidateURLs() -> [URL] {
+        var urls: [URL] = []
+        var usesNeptuneWallpaper = false
+
+        let wallpaperStore = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("Library/Application Support/com.apple.wallpaper/Store")
+        for filename in ["Index.plist", "Index_v2.plist"] {
+            let url = wallpaperStore.appendingPathComponent(filename)
+            if let dictionary = NSDictionary(contentsOf: url) as? [String: Any] {
+                usesNeptuneWallpaper = usesNeptuneWallpaper || containsNeptuneProvider(in: dictionary)
+                urls.append(contentsOf: fileURLs(in: dictionary))
+            }
+        }
+
+        if usesNeptuneWallpaper, let neptuneURL = neptuneWallpaperURL() {
+            urls.insert(neptuneURL, at: 0)
+        }
+
+        let screen = activeScreen
+        if let desktopURL = NSWorkspace.shared.desktopImageURL(for: screen) {
+            urls.append(desktopURL)
+        }
+
+        return urls.reduce(into: []) { result, url in
+            guard !result.contains(url) else { return }
+            result.append(url)
+        }
+    }
+
+    private static func containsNeptuneProvider(in value: Any) -> Bool {
+        if let dictionary = value as? [String: Any] {
+            if dictionary["Provider"] as? String == "com.apple.NeptuneOneExtension" {
+                return true
+            }
+            return dictionary.values.contains { containsNeptuneProvider(in: $0) }
+        }
+
+        if let array = value as? [Any] {
+            return array.contains { containsNeptuneProvider(in: $0) }
+        }
+
+        return false
+    }
+
+    private static func neptuneWallpaperURL() -> URL? {
+        let resourceDirectory = URL(fileURLWithPath: "/System/Library/ExtensionKit/Extensions/NeptuneOneWallpaper.appex/Contents/Resources")
+        let appearance = NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua])
+        let filename = appearance == .darkAqua ? "TahoeDark.heic" : "TahoeLight.heic"
+        let url = resourceDirectory.appendingPathComponent(filename)
+        return FileManager.default.fileExists(atPath: url.path) ? url : nil
+    }
+
+    private static func fileURLs(in value: Any) -> [URL] {
+        if let dictionary = value as? [String: Any] {
+            var urls: [URL] = []
+            if let relative = dictionary["relative"] as? String,
+               let url = URL(string: relative) ?? URL(fileURLWithPath: relative) as URL? {
+                urls.append(url)
+            }
+            for nestedValue in dictionary.values {
+                urls.append(contentsOf: fileURLs(in: nestedValue))
+            }
+            return urls
+        }
+
+        if let array = value as? [Any] {
+            return array.flatMap { fileURLs(in: $0) }
+        }
+
+        if let string = value as? String {
+            if let url = URL(string: string), url.isFileURL {
+                return [url]
+            }
+            if string.hasPrefix("/") {
+                return [URL(fileURLWithPath: string)]
+            }
+        }
+
+        return []
     }
 }
 
@@ -189,7 +314,7 @@ struct BreakBackgroundView: View {
         GeometryReader { geo in
             ZStack {
                 LinearGradient(
-                    colors: [p.top.color.opacity(0.45), p.bottom.color.opacity(0.35)],
+                    colors: [p.top.color, p.bottom.color],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
@@ -211,7 +336,12 @@ struct BreakBackgroundView: View {
                     duration: 32,
                     animate: $animate
                 )
+
+                Color.black.opacity(0.34)
             }
+            .blur(radius: 18)
+            .scaleEffect(1.05)
+            .clipped()
         }
         .onAppear { animate = true }
     }

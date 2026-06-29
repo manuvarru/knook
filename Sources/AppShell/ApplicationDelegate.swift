@@ -69,7 +69,7 @@ final class ApplicationDelegate: NSObject, NSApplicationDelegate {
     @objc private func togglePopover(_ sender: Any?) {
         guard let button = statusItem.button else { return }
 
-        if Date().timeIntervalSince(lastCloseDate) < 0.25 { return }
+        if Date().timeIntervalSince(lastCloseDate) < 0.05 { return }
 
         if popover.isShown {
             closePopover()
@@ -83,7 +83,7 @@ final class ApplicationDelegate: NSObject, NSApplicationDelegate {
         let isDark = NSApp.effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
         popover.contentViewController?.view.appearance = NSAppearance(named: isDark ? .darkAqua : .aqua)
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
-        popover.contentViewController?.view.window?.makeKey()
+        popover.contentViewController?.view.window?.makeKeyAndOrderFront(nil)
         installEventMonitor()
     }
 

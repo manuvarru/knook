@@ -14,8 +14,13 @@ var activeScreen: NSScreen {
 enum OverlayWindowHelper {
     private static var dismissGeneration: UInt64 = 0
 
+    private final class OverlayWindow: NSWindow {
+        override var canBecomeKey: Bool { true }
+        override var canBecomeMain: Bool { true }
+    }
+
     static func makeFullscreenWindow() -> NSWindow {
-        let window = NSWindow(
+        let window = OverlayWindow(
             contentRect: .zero,
             styleMask: [.borderless],
             backing: .buffered,
@@ -25,6 +30,7 @@ enum OverlayWindowHelper {
         window.isOpaque = false
         window.backgroundColor = .clear
         window.hasShadow = false
+        window.acceptsMouseMovedEvents = true
         window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         return window
     }
@@ -50,22 +56,15 @@ enum OverlayWindowHelper {
         let screenFrame = activeScreen.frame
         window.setFrame(screenFrame, display: true)
 
-        let blurView = NSVisualEffectView(frame: screenFrame)
-        blurView.blendingMode = .behindWindow
-        blurView.material = .hudWindow
-        blurView.state = .active
-        blurView.appearance = NSAppearance(named: .darkAqua)
-        blurView.autoresizingMask = [.width, .height]
-
         let hostingView = NSHostingView(rootView: rootView)
         hostingView.frame = screenFrame
         hostingView.autoresizingMask = [.width, .height]
 
-        blurView.addSubview(hostingView)
-        window.contentView = blurView
+        window.contentView = hostingView
         window.alphaValue = 0
-        window.orderFrontRegardless()
         NSApp.activate(ignoringOtherApps: true)
+        window.makeKeyAndOrderFront(nil)
+        window.orderFrontRegardless()
 
         NSAnimationContext.runAnimationGroup { context in
             context.duration = fadeDuration
@@ -74,7 +73,7 @@ enum OverlayWindowHelper {
         }
     }
 
-    static func dismissOverlay(_ window: NSWindow, fadeDuration: TimeInterval = 0.4) {
+    static func dismissOverlay(_ window: NSWindow, fadeDuration: TimeInterval = 0.4, completion: (@MainActor @Sendable () -> Void)? = nil) {
         let generation = dismissGeneration
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = fadeDuration
@@ -84,6 +83,7 @@ enum OverlayWindowHelper {
             Task { @MainActor in
                 guard generation == dismissGeneration else { return }
                 window.orderOut(nil)
+                completion?()
             }
         })
     }

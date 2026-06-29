@@ -6,11 +6,11 @@ enum AppVersion {
 }
 
 enum SettingsTab: String, CaseIterable, Identifiable {
-    case general = "General"
-    case breaks = "Breaks"
-    case schedule = "Schedule"
-    case appearance = "Appearance"
-    case wellness = "Wellness"
+    case general = "Generali"
+    case breaks = "Pause"
+    case schedule = "Programmazione"
+    case appearance = "Aspetto"
+    case wellness = "Benessere"
 
     var id: String { rawValue }
 
@@ -128,7 +128,7 @@ private struct GeneralSettingsPane: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Launch at login", isOn: Binding(
+                Toggle("Avvia al login", isOn: Binding(
                     get: { model.settings.scheduleSettings.launchAtLogin },
                     set: { newValue in
                         model.settings.scheduleSettings.launchAtLogin = newValue
@@ -136,11 +136,11 @@ private struct GeneralSettingsPane: View {
                     }
                 ))
             } footer: {
-                Text("Launch knook automatically when you log in.")
+                Text("Avvia Knook Ita automaticamente quando accedi.")
             }
 
             Section {
-                Toggle("Pause during fullscreen apps", isOn: Binding(
+                Toggle("Pausa durante le app a schermo intero", isOn: Binding(
                     get: { model.settings.smartPauseSettings.pauseDuringFullscreenFocus },
                     set: { newValue in
                         model.settings.smartPauseSettings.pauseDuringFullscreenFocus = newValue
@@ -148,7 +148,7 @@ private struct GeneralSettingsPane: View {
                     }
                 ))
 
-                Toggle("Pause during calls", isOn: Binding(
+                Toggle("Pausa durante le chiamate", isOn: Binding(
                     get: { model.settings.smartPauseSettings.pauseDuringMicrophoneActive },
                     set: { newValue in
                         model.settings.smartPauseSettings.pauseDuringMicrophoneActive = newValue
@@ -156,13 +156,13 @@ private struct GeneralSettingsPane: View {
                     }
                 ))
             } footer: {
-                Text("Automatically pause break reminders during fullscreen apps or when your microphone is in use.")
+                Text("Mette automaticamente in pausa i promemoria durante le app a schermo intero o quando il microfono è in uso.")
             }
 
             Section {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text("Idle reset threshold")
+                        Text("Soglia di inattività")
                         Spacer()
                         Text("\(Int(idleMinutes.wrappedValue)) min")
                             .monospacedDigit()
@@ -171,11 +171,11 @@ private struct GeneralSettingsPane: View {
                     Slider(value: idleMinutes, in: 1...15, step: 1)
                 }
             } footer: {
-                Text("Reset the break timer after this much idle time.")
+                Text("Azzera il timer delle pause dopo questo periodo di inattività.")
             }
         }
         .formStyle(.grouped)
-        .navigationTitle("General")
+        .navigationTitle("Generali")
     }
 }
 
@@ -227,7 +227,7 @@ private struct BreaksSettingsPane: View {
             Section {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text("Work duration")
+                        Text("Durata lavoro")
                         Spacer()
                         Text("\(Int(workMinutes.wrappedValue)) min")
                             .monospacedDigit()
@@ -236,13 +236,13 @@ private struct BreaksSettingsPane: View {
                     Slider(value: workMinutes, in: 10...90, step: 5)
                 }
             } footer: {
-                Text("How long you work before a break reminder appears.")
+                Text("Quanto lavori prima che appaia un promemoria di pausa.")
             }
 
             Section {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text("Break duration")
+                        Text("Durata pausa")
                         Spacer()
                         Text("\(Int(breakSeconds.wrappedValue)) sec")
                             .monospacedDigit()
@@ -251,11 +251,11 @@ private struct BreaksSettingsPane: View {
                     Slider(value: breakSeconds, in: 10...120, step: 5)
                 }
             } footer: {
-                Text("How long the break overlay stays on screen.")
+                Text("Per quanto tempo la pausa resta visibile sullo schermo.")
             }
 
             Section {
-                Picker("Skip policy", selection: Binding(
+                Picker("Regola salto", selection: Binding(
                     get: { model.settings.breakSettings.skipPolicy },
                     set: { newValue in
                         model.settings.breakSettings.skipPolicy = newValue
@@ -268,7 +268,7 @@ private struct BreaksSettingsPane: View {
                 }
                 .pickerStyle(.segmented)
 
-                Toggle("Allow ending breaks early", isOn: Binding(
+                Toggle("Consenti di terminare le pause in anticipo", isOn: Binding(
                     get: { model.settings.breakSettings.allowEarlyEnd },
                     set: { newValue in
                         model.settings.breakSettings.allowEarlyEnd = newValue
@@ -276,11 +276,11 @@ private struct BreaksSettingsPane: View {
                     }
                 ))
             } footer: {
-                Text("Casual: skip anytime. Balanced: skip after 8 seconds. Hardcore: no skipping.")
+                Text("Flessibile: salta quando vuoi. Bilanciata: salta dopo 8 secondi. Rigorosa: non puoi saltare.")
             }
 
             Section {
-                Toggle("Long breaks", isOn: Binding(
+                Toggle("Pause lunghe", isOn: Binding(
                     get: { model.settings.breakSettings.longBreaksEnabled },
                     set: { newValue in
                         model.settings.breakSettings.longBreaksEnabled = newValue
@@ -291,7 +291,7 @@ private struct BreaksSettingsPane: View {
                 if model.settings.breakSettings.longBreaksEnabled {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text("Long break duration")
+                            Text("Durata pausa lunga")
                             Spacer()
                             Text("\(Int(longBreakMinutes.wrappedValue)) min")
                                 .monospacedDigit()
@@ -302,19 +302,19 @@ private struct BreaksSettingsPane: View {
 
                     Stepper(value: longBreakCadence, in: 2...10) {
                         HStack {
-                            Text("Every")
-                            Text("\(longBreakCadence.wrappedValue) breaks")
+                            Text("Ogni")
+                            Text("\(longBreakCadence.wrappedValue) pause")
                                 .monospacedDigit()
                                 .foregroundStyle(.secondary)
                         }
                     }
                 }
             } footer: {
-                Text("Periodically take a longer break instead of a micro break.")
+                Text("Ogni tanto fai una pausa più lunga invece di una micro pausa.")
             }
         }
         .formStyle(.grouped)
-        .navigationTitle("Breaks")
+        .navigationTitle("Pause")
     }
 }
 
@@ -333,7 +333,7 @@ private struct AppearanceSettingsPane: View {
     var body: some View {
         Form {
             Section {
-                Picker("Break sound", selection: Binding(
+                Picker("Suono pausa", selection: Binding(
                     get: { model.settings.breakSettings.selectedSound },
                     set: { newValue in
                         model.settings.breakSettings.selectedSound = newValue
@@ -342,11 +342,11 @@ private struct AppearanceSettingsPane: View {
                     }
                 )) {
                     ForEach(BreakSound.allCases) { sound in
-                        Text(sound.rawValue.capitalized).tag(sound)
+                        Text(sound.title).tag(sound)
                     }
                 }
             } footer: {
-                Text("Sound played when a break starts.")
+                Text("Suono riprodotto quando inizia una pausa.")
             }
 
             Section {
@@ -367,7 +367,7 @@ private struct AppearanceSettingsPane: View {
                                             .strokeBorder(isSelected ? Color.accentColor : .clear, lineWidth: 2)
                                     )
 
-                                Text(style.rawValue.capitalized)
+                                Text(style.title)
                                     .font(.caption)
                                     .foregroundStyle(isSelected ? .primary : .secondary)
                             }
@@ -377,13 +377,37 @@ private struct AppearanceSettingsPane: View {
                 }
                 .padding(.vertical, 4)
             } header: {
-                Text("Background style")
+                Text("Stile sfondo")
             } footer: {
-                Text("Visual theme for the break overlay.")
+                Text("Tema visivo della schermata di pausa.")
+            }
+
+            Section {
+                Toggle("Usa lo sfondo del Mac", isOn: Binding(
+                    get: { model.settings.breakSettings.useDesktopWallpaper },
+                    set: { newValue in
+                        model.settings.breakSettings.useDesktopWallpaper = newValue
+                        if !newValue {
+                            model.settings.breakSettings.blurDesktopWallpaper = false
+                        }
+                        model.saveSettings()
+                    }
+                ))
+
+                Toggle("Sfoca lo sfondo del Mac", isOn: Binding(
+                    get: { model.settings.breakSettings.blurDesktopWallpaper },
+                    set: { newValue in
+                        model.settings.breakSettings.blurDesktopWallpaper = newValue
+                        model.saveSettings()
+                    }
+                ))
+                .disabled(!model.settings.breakSettings.useDesktopWallpaper)
+            } footer: {
+                Text("Quando è attivo, la schermata di pausa usa lo sfondo attuale di macOS al posto del tema colore.")
             }
         }
         .formStyle(.grouped)
-        .navigationTitle("Appearance")
+        .navigationTitle("Aspetto")
     }
 }
 
@@ -411,24 +435,24 @@ private struct ScheduleSettingsPane: View {
                         }
                     }
 
-                    Button("Clear office hours") {
+                    Button("Cancella orari di lavoro") {
                         model.clearOfficeHours()
                     }
                 } else if hasSuggestions {
-                    Text("knook has learned your work pattern.")
+                    Text("Knook Ita ha imparato il tuo ritmo di lavoro.")
                         .foregroundStyle(.secondary)
 
-                    Button("Apply suggested hours") {
+                    Button("Applica orari suggeriti") {
                         model.applySuggestedOfficeHours()
                     }
                 } else {
-                    Text("knook is learning when you work. Check back in a few days.")
+                    Text("Knook Ita sta imparando quando lavori. Ricontrolla tra qualche giorno.")
                         .foregroundStyle(.secondary)
                 }
             } header: {
-                Text("Office Hours")
+                Text("Orari di lavoro")
             } footer: {
-                Text("When office hours are set, break reminders only run during those times.")
+                Text("Quando imposti gli orari di lavoro, i promemoria delle pause funzionano solo in quelle fasce.")
             }
         }
         .formStyle(.grouped)
@@ -479,7 +503,7 @@ private struct WellnessSettingsPane: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Posture reminders", isOn: Binding(
+                Toggle("Promemoria postura", isOn: Binding(
                     get: { model.settings.wellnessSettings.posture.isEnabled },
                     set: { newValue in
                         model.settings.wellnessSettings.posture.isEnabled = newValue
@@ -490,7 +514,7 @@ private struct WellnessSettingsPane: View {
                 if model.settings.wellnessSettings.posture.isEnabled {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text("Interval")
+                            Text("Intervallo")
                             Spacer()
                             Text("\(Int(postureMinutes.wrappedValue)) min")
                                 .monospacedDigit()
@@ -499,24 +523,24 @@ private struct WellnessSettingsPane: View {
                         Slider(value: postureMinutes, in: 5...60, step: 5)
                     }
 
-                    Picker("Delivery", selection: Binding(
+                    Picker("Metodo", selection: Binding(
                         get: { model.settings.wellnessSettings.posture.deliveryStyle },
                         set: { newValue in
                             model.settings.wellnessSettings.posture.deliveryStyle = newValue
                             model.saveSettings()
                         }
                     )) {
-                        Text("Panel").tag(WellnessDeliveryStyle.panel)
-                        Text("Notification").tag(WellnessDeliveryStyle.notification)
+                        Text("Pannello").tag(WellnessDeliveryStyle.panel)
+                        Text("Notifica").tag(WellnessDeliveryStyle.notification)
                     }
                     .pickerStyle(.segmented)
                 }
             } footer: {
-                Text("Gentle reminders to check your posture.")
+                Text("Promemoria delicati per controllare la postura.")
             }
 
             Section {
-                Toggle("Blink reminders", isOn: Binding(
+                Toggle("Promemoria occhi", isOn: Binding(
                     get: { model.settings.wellnessSettings.blink.isEnabled },
                     set: { newValue in
                         model.settings.wellnessSettings.blink.isEnabled = newValue
@@ -527,7 +551,7 @@ private struct WellnessSettingsPane: View {
                 if model.settings.wellnessSettings.blink.isEnabled {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text("Interval")
+                            Text("Intervallo")
                             Spacer()
                             Text("\(Int(blinkMinutes.wrappedValue)) min")
                                 .monospacedDigit()
@@ -536,23 +560,23 @@ private struct WellnessSettingsPane: View {
                         Slider(value: blinkMinutes, in: 5...30, step: 5)
                     }
 
-                    Picker("Delivery", selection: Binding(
+                    Picker("Metodo", selection: Binding(
                         get: { model.settings.wellnessSettings.blink.deliveryStyle },
                         set: { newValue in
                             model.settings.wellnessSettings.blink.deliveryStyle = newValue
                             model.saveSettings()
                         }
                     )) {
-                        Text("Panel").tag(WellnessDeliveryStyle.panel)
-                        Text("Notification").tag(WellnessDeliveryStyle.notification)
+                        Text("Pannello").tag(WellnessDeliveryStyle.panel)
+                        Text("Notifica").tag(WellnessDeliveryStyle.notification)
                     }
                     .pickerStyle(.segmented)
                 }
             } footer: {
-                Text("Reminders to blink and rest your eyes.")
+                Text("Promemoria per sbattere le palpebre e riposare gli occhi.")
             }
         }
         .formStyle(.grouped)
-        .navigationTitle("Wellness")
+        .navigationTitle("Benessere")
     }
 }

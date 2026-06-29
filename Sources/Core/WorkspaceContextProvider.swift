@@ -98,7 +98,7 @@ public final class WorkspaceContextProvider: WorkspaceContextProviding {
 }
 
 public final class FullscreenPauseConditionProvider: PauseConditionProvider, @unchecked Sendable {
-    public let name = "Full-Screen Focus"
+    public let name = "app a schermo intero"
     private let workspaceContextProvider: any WorkspaceContextProviding
 
     public init(workspaceContextProvider: any WorkspaceContextProviding) {
@@ -116,7 +116,7 @@ public protocol MicrophoneStateChecking: Sendable {
 }
 
 public final class MicrophoneActivePauseConditionProvider: PauseConditionProvider, @unchecked Sendable {
-    public let name = "Active Microphone"
+    public let name = "microfono attivo"
     private let stateChecker: MicrophoneStateChecking
 
     public init(stateChecker: MicrophoneStateChecking = CoreAudioMicrophoneChecker()) {

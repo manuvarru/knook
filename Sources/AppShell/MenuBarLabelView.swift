@@ -18,7 +18,7 @@ enum MenuBarLabelFormatter {
             return MenuBarLabelContent(
                 symbolName: "pause.fill",
                 countdownText: nil,
-                accessibilityLabel: "knook",
+                accessibilityLabel: "Knook Ita",
                 showsUpdateBadge: showsUpdateBadge
             )
         }
@@ -27,7 +27,7 @@ enum MenuBarLabelFormatter {
             return MenuBarLabelContent(
                 symbolName: "pause.circle.fill",
                 countdownText: state.countdownText,
-                accessibilityLabel: "\(activeBreak.kind.title) in progress",
+                accessibilityLabel: "\(activeBreak.kind.title) in corso",
                 showsUpdateBadge: showsUpdateBadge
             )
         }
@@ -36,7 +36,7 @@ enum MenuBarLabelFormatter {
             return MenuBarLabelContent(
                 symbolName: "pause.fill",
                 countdownText: state.pauseReason,
-                accessibilityLabel: state.pauseReason ?? "Paused",
+                accessibilityLabel: state.pauseReason ?? "In pausa",
                 showsUpdateBadge: showsUpdateBadge
             )
         }
@@ -45,7 +45,7 @@ enum MenuBarLabelFormatter {
             return MenuBarLabelContent(
                 symbolName: "hourglass",
                 countdownText: state.countdownText,
-                accessibilityLabel: "Next break countdown",
+                accessibilityLabel: "Conto alla rovescia della prossima pausa",
                 showsUpdateBadge: showsUpdateBadge
             )
         }

@@ -56,15 +56,15 @@ final class NullUpdateManager: UpdateManaging {
     }
 
     func checkForUpdates() {
-        stateSubject.send(.error("Update checks are unavailable for this build."))
+        stateSubject.send(.error("La ricerca aggiornamenti non è disponibile per questa build."))
     }
 
     func installAvailableUpdate() {
-        stateSubject.send(.error("Update checks are unavailable for this build."))
+        stateSubject.send(.error("La ricerca aggiornamenti non è disponibile per questa build."))
     }
 
     func installViaTerminalFallback() {
-        stateSubject.send(.error("Update checks are unavailable for this build."))
+        stateSubject.send(.error("La ricerca aggiornamenti non è disponibile per questa build."))
     }
 }
 
@@ -165,7 +165,7 @@ struct SystemExternalUpdateHandler: ExternalUpdateHandling {
         if bundleURL.pathExtension == "app" {
             appPath = bundleURL.path
         } else {
-            appPath = "/Applications/knook.app"
+            appPath = "/Applications/Knook Ita.app"
         }
 
         let pid = ProcessInfo.processInfo.processIdentifier
@@ -259,7 +259,7 @@ final class GitHubReleaseUpdateManager: UpdateManaging {
 
     func installAvailableUpdate() {
         guard let availableRelease else {
-            stateSubject.send(.error("No update is currently available."))
+            stateSubject.send(.error("Al momento non è disponibile alcun aggiornamento."))
             return
         }
 
@@ -287,10 +287,10 @@ final class GitHubReleaseUpdateManager: UpdateManaging {
                 do {
                     try externalHandler.quitAndRelaunch()
                 } catch {
-                    stateSubject.send(.error("Update installed but could not relaunch. Please restart knook manually."))
+                    stateSubject.send(.error("Aggiornamento installato, ma non è stato possibile riavviare. Riavvia Knook Ita manualmente."))
                 }
             case let .failure(step, log):
-                stateSubject.send(.error("Update failed during: \(step)\n\(log.suffix(500))"))
+                stateSubject.send(.error("Aggiornamento non riuscito durante: \(step)\n\(log.suffix(500))"))
             }
         }
     }
@@ -300,7 +300,7 @@ final class GitHubReleaseUpdateManager: UpdateManaging {
         do {
             try externalHandler.openTerminal(with: Self.homebrewUpdateCommand(using: brewPath))
         } catch {
-            stateSubject.send(.error("Could not open Terminal. \(error.localizedDescription)"))
+            stateSubject.send(.error("Non è stato possibile aprire il Terminale. \(error.localizedDescription)"))
         }
     }
 
@@ -371,7 +371,7 @@ final class GitHubReleaseUpdateManager: UpdateManaging {
 
     private func handleFailedReleaseFetch(_ error: any Error, trigger: UpdateCheckTrigger) {
         availableRelease = nil
-        let prefix = trigger == .manual ? "Could not check for updates." : "Automatic update check failed."
+        let prefix = trigger == .manual ? "Non è stato possibile cercare aggiornamenti." : "Ricerca automatica aggiornamenti non riuscita."
         stateSubject.send(.error("\(prefix) \(error.localizedDescription)"))
     }
 
@@ -408,10 +408,10 @@ final class GitHubReleaseUpdateManager: UpdateManaging {
 
     static func homebrewUpdateSteps(using brewPath: String) -> [(label: String, arguments: [String])] {
         [
-            ("Refreshing tap…", ["untap", "preetsuthar17/tap"]),
-            ("Refreshing tap…", ["tap", "preetsuthar17/tap"]),
-            ("Updating Homebrew…", ["update"]),
-            ("Installing knook…", ["upgrade", "--cask", "knook"]),
+            ("Aggiornamento tap...", ["untap", "preetsuthar17/tap"]),
+            ("Aggiornamento tap...", ["tap", "preetsuthar17/tap"]),
+            ("Aggiornamento Homebrew...", ["update"]),
+            ("Installazione Knook Ita...", ["upgrade", "--cask", "knook"]),
         ]
     }
 
@@ -442,11 +442,11 @@ private enum GitHubReleaseError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidResponse:
-            return "GitHub returned an invalid response."
+            return "GitHub ha restituito una risposta non valida."
         case let .unexpectedStatusCode(statusCode):
-            return "GitHub returned HTTP \(statusCode)."
+            return "GitHub ha restituito HTTP \(statusCode)."
         case .missingTag:
-            return "The latest GitHub release is missing a version tag."
+            return "Nell'ultima release GitHub manca il tag di versione."
         }
     }
 }

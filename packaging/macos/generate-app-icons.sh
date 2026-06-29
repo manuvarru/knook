@@ -5,32 +5,22 @@ set -euo pipefail
 script_dir=${0:A:h}
 repo_root=${script_dir:h:h}
 
-source_logo="${repo_root}/knook logo.png"
-legacy_source_logo="${repo_root}/nook logo.png"
 runtime_icon="${repo_root}/Sources/AppShell/Resources/AppIcon.png"
+runtime_icns="${repo_root}/Sources/AppShell/Resources/AppIcon.icns"
 xcassets_dir="${repo_root}/Sources/AppShell/Resources/Assets.xcassets"
 appiconset_dir="${xcassets_dir}/AppIcon.appiconset"
 bundle_icon="${repo_root}/packaging/macos/AppIcon.icns"
-
-if [[ ! -f "${source_logo}" && -f "${legacy_source_logo}" ]]; then
-  source_logo="${legacy_source_logo}"
-fi
-
-if [[ ! -f "${source_logo}" ]]; then
-  echo "Missing source logo at ${source_logo}" >&2
-  exit 1
-fi
+renderer="${script_dir}/render-app-icon.swift"
 
 mkdir -p "${appiconset_dir}"
 
 tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/knook-icons.XXXXXX")
 trap 'rm -rf "${tmp_dir}"' EXIT
 
-padded_base="${tmp_dir}/AppIcon-1024.png"
+base_icon="${tmp_dir}/AppIcon-1024.png"
 
-/usr/bin/sips --padToHeightWidth 640 640 "${source_logo}" --out "${tmp_dir}/padded.png" >/dev/null
-/usr/bin/sips --resampleHeightWidth 1024 1024 "${tmp_dir}/padded.png" --out "${padded_base}" >/dev/null
-/usr/bin/sips --resampleHeightWidth 512 512 "${padded_base}" --out "${runtime_icon}" >/dev/null
+/usr/bin/swift "${renderer}" "${base_icon}"
+/usr/bin/sips --resampleHeightWidth 512 512 "${base_icon}" --out "${runtime_icon}" >/dev/null
 
 sizes=(
   "16 icon_16x16.png"
@@ -48,12 +38,14 @@ sizes=(
 for spec in "${sizes[@]}"; do
   size=${spec%% *}
   filename=${spec#* }
-  /usr/bin/sips --resampleHeightWidth "${size}" "${size}" "${padded_base}" --out "${appiconset_dir}/${filename}" >/dev/null
+  /usr/bin/sips --resampleHeightWidth "${size}" "${size}" "${base_icon}" --out "${appiconset_dir}/${filename}" >/dev/null
 done
 
 /usr/bin/sips -s format icns "${runtime_icon}" --out "${bundle_icon}" >/dev/null
+/bin/cp "${bundle_icon}" "${runtime_icns}"
 
 echo "Updated:"
-echo "  ${runtime_icon}"
+  echo "  ${runtime_icon}"
+echo "  ${runtime_icns}"
 echo "  ${appiconset_dir}"
 echo "  ${bundle_icon}"

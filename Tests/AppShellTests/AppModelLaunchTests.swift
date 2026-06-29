@@ -129,7 +129,7 @@ final class AppModelLaunchTests: XCTestCase {
 
         XCTAssertEqual(model.launchPhase, .onboarding)
         XCTAssertEqual(model.menuBarMode, .setup)
-        XCTAssertEqual(model.appState.statusText, "Finish setup to start your break rhythm")
+        XCTAssertEqual(model.appState.statusText, "Completa la configurazione per iniziare il tuo ritmo di pause")
     }
 
     func testHandleAppDidFinishLaunchingPausesForFullscreenFocusWhenEnabled() throws {
@@ -151,7 +151,7 @@ final class AppModelLaunchTests: XCTestCase {
         model.handleAppDidFinishLaunching(now: Date(timeIntervalSinceReferenceDate: 500))
 
         XCTAssertTrue(model.appState.isPaused)
-        XCTAssertEqual(model.appState.pauseReason, "Full-Screen Focus")
+        XCTAssertEqual(model.appState.pauseReason, "app a schermo intero")
     }
 
     func testSaveSettingsUpdatesSmartPauseProviders() throws {
@@ -180,7 +180,7 @@ final class AppModelLaunchTests: XCTestCase {
         model.tick(now: Date(timeIntervalSinceReferenceDate: 560))
 
         XCTAssertTrue(model.appState.isPaused)
-        XCTAssertEqual(model.appState.pauseReason, "Full-Screen Focus")
+        XCTAssertEqual(model.appState.pauseReason, "app a schermo intero")
     }
 
     private func completedSettings() -> AppSettings {

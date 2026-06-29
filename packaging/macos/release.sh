@@ -16,7 +16,7 @@ scheme=${KNOOK_SCHEME:-knook}
 archive_path="${repo_root}/build/${scheme}.xcarchive"
 export_path="${repo_root}/build/export"
 derived_data_path="${repo_root}/build/DerivedData"
-project_path="${repo_root}/knook.xcodeproj"
+project_path="${repo_root}/Knook_Ita.xcodeproj"
 export_options_plist="${repo_root}/packaging/macos/ExportOptions.plist"
 signing_identity=${KNOOK_SIGNING_IDENTITY:-"Developer ID Application"}
 notary_profile=${KNOOK_NOTARY_PROFILE:-knook-notary}
@@ -40,7 +40,7 @@ if [[ "${unsigned_preview}" == "1" ]]; then
     CODE_SIGNING_ALLOWED=NO \
     build
 
-  app_path="${derived_data_path}/Build/Products/Release/knook.app"
+  app_path="${derived_data_path}/Build/Products/Release/Knook Ita.app"
   echo "Built unsigned preview app at ${app_path}"
 else
   xcodebuild \
@@ -58,7 +58,7 @@ else
     -exportPath "${export_path}" \
     -exportOptionsPlist "${export_options_plist}"
 
-  app_path="${export_path}/knook.app"
+  app_path="${export_path}/Knook Ita.app"
   codesign --verify --deep --strict --verbose=2 "${app_path}"
 fi
 

@@ -88,6 +88,10 @@ final class SettingsStoreTests: XCTestCase {
         XCTAssertEqual(loaded.schemaVersion, AppSettings.currentSchemaVersion)
         XCTAssertFalse(loaded.smartPauseSettings.pauseDuringFullscreenFocus)
         XCTAssertFalse(persistedAfterMigration.contains("reminderLeadTime"))
+        XCTAssertEqual(loaded.breakSettings.customMessages, [
+            "Guarda lontano nella stanza e rilassa lo sguardo.",
+        ])
+        XCTAssertFalse(persistedAfterMigration.contains("Look across the room"))
     }
 
     func testLoadMigratesFromLegacyFileLocationWhenPrimaryFileIsMissing() throws {

@@ -13,7 +13,7 @@ rescue LoadError
 end
 
 repo_root = File.expand_path("../..", __dir__)
-project_path = File.join(repo_root, "knook.xcodeproj")
+project_path = File.join(repo_root, "Knook_Ita.xcodeproj")
 marketing_version = ENV.fetch("KNOOK_MARKETING_VERSION", "0.3.1")
 current_project_version = ENV.fetch("KNOOK_CURRENT_PROJECT_VERSION", "1")
 
@@ -39,12 +39,13 @@ app_target.frameworks_build_phase.add_file_reference(core_target.product_referen
 
 project.build_configuration_list.build_configurations.each do |config|
   config.build_settings["MACOSX_DEPLOYMENT_TARGET"] = "13.0"
+  config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "14.0"
   config.build_settings["SDKROOT"] = "macosx"
+  config.build_settings["SUPPORTED_PLATFORMS"] = "macosx"
   config.build_settings["SWIFT_VERSION"] = "6.0"
 end
 
 app_target.build_configuration_list.build_configurations.each do |config|
-  config.build_settings["ASSETCATALOG_COMPILER_APPICON_NAME"] = "AppIcon"
   config.build_settings["CODE_SIGN_IDENTITY"] = "Developer ID Application"
   config.build_settings["CODE_SIGN_STYLE"] = "Manual"
   config.build_settings["CURRENT_PROJECT_VERSION"] = current_project_version
@@ -58,10 +59,12 @@ app_target.build_configuration_list.build_configurations.each do |config|
     "@executable_path/../Frameworks",
   ]
   config.build_settings["MACOSX_DEPLOYMENT_TARGET"] = "13.0"
+  config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "14.0"
   config.build_settings["MARKETING_VERSION"] = marketing_version
   config.build_settings["PRODUCT_BUNDLE_IDENTIFIER"] = "io.github.preetsuthar17.knook"
-  config.build_settings["PRODUCT_NAME"] = "knook"
+  config.build_settings["PRODUCT_NAME"] = "Knook Ita"
   config.build_settings["SDKROOT"] = "macosx"
+  config.build_settings["SUPPORTED_PLATFORMS"] = "macosx"
   config.build_settings["SWIFT_EMIT_LOC_STRINGS"] = "YES"
   config.build_settings["SWIFT_VERSION"] = "6.0"
 end
@@ -70,8 +73,10 @@ core_target.build_configuration_list.build_configurations.each do |config|
   config.build_settings["DEFINES_MODULE"] = "YES"
   config.build_settings["MACH_O_TYPE"] = "staticlib"
   config.build_settings["MACOSX_DEPLOYMENT_TARGET"] = "13.0"
+  config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "14.0"
   config.build_settings["PRODUCT_NAME"] = "Core"
   config.build_settings["SDKROOT"] = "macosx"
+  config.build_settings["SUPPORTED_PLATFORMS"] = "macosx"
   config.build_settings["SKIP_INSTALL"] = "YES"
   config.build_settings["SWIFT_VERSION"] = "6.0"
 end
@@ -83,6 +88,7 @@ core_source_refs = Dir[File.join(repo_root, "Sources/Core/*.swift")].sort.map do
   core_group.new_file(File.basename(path))
 end
 resource_refs = [
+  resources_group.new_file("AppIcon.icns"),
   resources_group.new_file("AppIcon.png"),
   resources_group.new_file("Assets.xcassets"),
 ]

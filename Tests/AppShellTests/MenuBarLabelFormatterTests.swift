@@ -10,7 +10,7 @@ final class MenuBarLabelFormatterTests: XCTestCase {
             kind: .micro,
             startedAt: now,
             scheduledEnd: now.addingTimeInterval(20),
-            message: "Rest your eyes",
+            message: "Riposati gli occhi",
             backgroundStyle: .dawn,
             skipAvailableAfter: now
         )
@@ -20,7 +20,7 @@ final class MenuBarLabelFormatterTests: XCTestCase {
             activeBreak: activeBreak,
             isPaused: false,
             pauseReason: nil,
-            statusText: "Short Break in progress (00:20 left)"
+            statusText: "Pausa breve in corso (00:20 rimanenti)"
         )
 
         let content = MenuBarLabelFormatter.content(launchPhase: .ready, state: state)
@@ -37,7 +37,7 @@ final class MenuBarLabelFormatterTests: XCTestCase {
             activeBreak: nil,
             isPaused: false,
             pauseReason: nil,
-            statusText: "Next break in 05:00"
+            statusText: "Prossima pausa tra 05:00"
         )
 
         let content = MenuBarLabelFormatter.content(launchPhase: .ready, state: state)
@@ -54,7 +54,7 @@ final class MenuBarLabelFormatterTests: XCTestCase {
             activeBreak: nil,
             isPaused: false,
             pauseReason: nil,
-            statusText: "Next break in 00:45"
+            statusText: "Prossima pausa tra 00:45"
         )
 
         let content = MenuBarLabelFormatter.content(launchPhase: .ready, state: state)
@@ -70,14 +70,14 @@ final class MenuBarLabelFormatterTests: XCTestCase {
             nextBreakDate: now.addingTimeInterval(5 * 60),
             activeBreak: nil,
             isPaused: true,
-            pauseReason: "Full-Screen Focus",
-            statusText: "Paused by Full-Screen Focus"
+            pauseReason: "app a schermo intero",
+            statusText: "In pausa: app a schermo intero"
         )
 
         let content = MenuBarLabelFormatter.content(launchPhase: .ready, state: state)
 
         XCTAssertEqual(content.symbolName, "pause.fill")
-        XCTAssertEqual(content.countdownText, "Full-Screen Focus")
+        XCTAssertEqual(content.countdownText, "app a schermo intero")
     }
 
     func testCarriesUpdateBadgeStateIntoMenuBarContent() {
@@ -88,7 +88,7 @@ final class MenuBarLabelFormatterTests: XCTestCase {
             activeBreak: nil,
             isPaused: false,
             pauseReason: nil,
-            statusText: "Next break in 05:00"
+            statusText: "Prossima pausa tra 05:00"
         )
 
         let content = MenuBarLabelFormatter.content(

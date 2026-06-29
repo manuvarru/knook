@@ -3,15 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00A1C0F1A77043D3A4B5C6D7 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 00A1C0F0A77043D3A4B5C6D7 /* AppIcon.icns */; };
 		01E9E7810F7E2D2DC443CCD9 /* AppLaunchConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87DF66E11F39FA35C649B841 /* AppLaunchConfiguration.swift */; };
 		0589918E83869287928E3D7D /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 312DEADE8B5F600611CBB794 /* SettingsWindowController.swift */; };
 		1598D652EE45B25FFEEBEFB8 /* TimerPhaseDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68572850C70E168F7F491BF9 /* TimerPhaseDisplay.swift */; };
 		19028CDB71ED90355C6EE7FD /* SharedStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98406286AA6DA6EE87B9AD8B /* SharedStyles.swift */; };
 		1966D058BC7EBEE156BFF0C7 /* WellnessReminderEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBE202C8CE7480D8E0B1377 /* WellnessReminderEngine.swift */; };
+		1A2B3C4D5E6F708192A3B4C5 /* ActivityLogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3C4D5E6F708192A3B4C5D6 /* ActivityLogStore.swift */; };
 		1F66B4F6A3C35B16265E2B1D /* BrewUpdateRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6725393E7C53B8CCE3B00C /* BrewUpdateRunner.swift */; };
 		21D90D4E7EB083D328FAA658 /* PopoverContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899B661B2BABF6937171EE76 /* PopoverContentView.swift */; };
 		2BEB4081CBB0A69519C34BB6 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = C17C0544A13CA3E54A507F90 /* ConfettiSwiftUI */; };
@@ -31,6 +33,7 @@
 		B5EACAEB40A387152CBC7635 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D58B04798ED0C4903941B73E /* Cocoa.framework */; };
 		B6796B09B25AC66233102B14 /* BreakOverlayWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACB1E8D3D45FC4E228091A6 /* BreakOverlayWindowController.swift */; };
 		B8E43C64A5F06C7CAC7A1031 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB69BE16F86EF358A2A15C7 /* Models.swift */; };
+		BA7E57A7500E123456789ABC /* BreakStatsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE1234567890ABCDEF12 /* BreakStatsStore.swift */; };
 		B99A15B24924BAD733079073 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42AA71CCAB0503FDC811972F /* Assets.xcassets */; };
 		C1CADB76146BCCF0620EA14C /* ContextualEducationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C774269C58DB3EDA3F645D4 /* ContextualEducationEngine.swift */; };
 		C2D937D8CACE74FE8EC4713F /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510376765075C33E627F3902 /* SettingsStore.swift */; };
@@ -54,11 +57,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00A1C0F0A77043D3A4B5C6D7 /* AppIcon.icns */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		0DBE49DD5A2D7C2192356CCF /* LaunchAtLoginController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginController.swift; sourceTree = "<group>"; };
 		14EC45563D78ECDA662E439F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A170B346571B75FD717E3DD /* WorkspaceContextProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WorkspaceContextProvider.swift; sourceTree = "<group>"; };
 		1ACB1E8D3D45FC4E228091A6 /* BreakOverlayWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BreakOverlayWindowController.swift; sourceTree = "<group>"; };
 		1ADD831FA8D3530C2706606A /* BreakOverlayView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BreakOverlayView.swift; sourceTree = "<group>"; };
+		2B3C4D5E6F708192A3B4C5D6 /* ActivityLogStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ActivityLogStore.swift; sourceTree = "<group>"; };
 		2C774269C58DB3EDA3F645D4 /* ContextualEducationEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContextualEducationEngine.swift; sourceTree = "<group>"; };
 		312DEADE8B5F600611CBB794 /* SettingsWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
 		3A9BAFA319ACD5576DB5A684 /* AppWindowCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppWindowCoordinator.swift; sourceTree = "<group>"; };
@@ -76,15 +81,15 @@
 		6FBE202C8CE7480D8E0B1377 /* WellnessReminderEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WellnessReminderEngine.swift; sourceTree = "<group>"; };
 		7831391159927EE441224DA4 /* libCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7936F6C964C21143302BB3AC /* StatusMenuView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StatusMenuView.swift; sourceTree = "<group>"; };
-		7D046A78DE86D9932FD2D47B /* knook.rb */ = {isa = PBXFileReference; includeInIndex = 1; path = knook.rb; sourceTree = "<group>"; };
-		7DD4A4C846058DBA98C705A6 /* generate-xcodeproj.rb */ = {isa = PBXFileReference; includeInIndex = 1; path = "generate-xcodeproj.rb"; sourceTree = "<group>"; };
+		7D046A78DE86D9932FD2D47B /* knook.rb */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.ruby; path = knook.rb; sourceTree = "<group>"; };
+		7DD4A4C846058DBA98C705A6 /* generate-xcodeproj.rb */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.ruby; path = "generate-xcodeproj.rb"; sourceTree = "<group>"; };
 		7E3D3F96FEA981DE3BB64C07 /* BreakScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BreakScheduler.swift; sourceTree = "<group>"; };
 		7FB69BE16F86EF358A2A15C7 /* Models.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		87DF66E11F39FA35C649B841 /* AppLaunchConfiguration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLaunchConfiguration.swift; sourceTree = "<group>"; };
 		899B661B2BABF6937171EE76 /* PopoverContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PopoverContentView.swift; sourceTree = "<group>"; };
 		9236737C1548B1C7E20AAE90 /* AppModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		949D0B0E40FEAF78A952C1E8 /* ActivityMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ActivityMonitor.swift; sourceTree = "<group>"; };
-		97720BBEF36FA64835767B84 /* knook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = knook.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97720BBEF36FA64835767B84 /* Knook Ita.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Knook Ita.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		98406286AA6DA6EE87B9AD8B /* SharedStyles.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SharedStyles.swift; sourceTree = "<group>"; };
 		AC643B172207AB06124E011E /* OverlayWindowHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverlayWindowHelper.swift; sourceTree = "<group>"; };
 		AF710988942EC7A0D9BFB710 /* ExportOptions.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = ExportOptions.plist; sourceTree = "<group>"; };
@@ -92,11 +97,12 @@
 		B23A23727EFB5A751D23DCF3 /* ApplicationDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ApplicationDelegate.swift; sourceTree = "<group>"; };
 		B65A5746898B9AA12B387517 /* generate-app-icons.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "generate-app-icons.sh"; sourceTree = "<group>"; };
 		C0F978B8FAF042FD8A9EB192 /* AppShellTypes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppShellTypes.swift; sourceTree = "<group>"; };
+		C0FFEE1234567890ABCDEF12 /* BreakStatsStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BreakStatsStore.swift; sourceTree = "<group>"; };
 		D58B04798ED0C4903941B73E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		D8E4AD0B09DBB3C7BA44CC1D /* WellnessPanelController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WellnessPanelController.swift; sourceTree = "<group>"; };
 		E64D907D0F617EC616CCE96F /* AppEntry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppEntry.swift; sourceTree = "<group>"; };
 		F5A41A464EDDD1BA68E26854 /* OnboardingFlowWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OnboardingFlowWindowController.swift; sourceTree = "<group>"; };
-		FD4DD155C9B3C5E96EF7494A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		FD4DD155C9B3C5E96EF7494A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +137,6 @@
 				B01DD6BD9262E7EA6FF5AC42 /* knook.entitlements */,
 				6854981D8BAACC1F67CF53FB /* release.sh */,
 			);
-			name = macos;
 			path = macos;
 			sourceTree = "<group>";
 		};
@@ -141,7 +146,6 @@
 				93407E775B83D1C427497649 /* homebrew */,
 				0A89C45B771DBF17685609C8 /* macos */,
 			);
-			name = packaging;
 			path = packaging;
 			sourceTree = SOURCE_ROOT;
 		};
@@ -171,17 +175,16 @@
 				3AE00D64881DF0E9FC784472 /* UpdateManager.swift */,
 				D8E4AD0B09DBB3C7BA44CC1D /* WellnessPanelController.swift */,
 			);
-			name = AppShell;
 			path = AppShell;
 			sourceTree = "<group>";
 		};
 		719B45063EC87C4AD9E4A9F0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				00A1C0F0A77043D3A4B5C6D7 /* AppIcon.icns */,
 				57151658175C317D57E5E36A /* AppIcon.png */,
 				42AA71CCAB0503FDC811972F /* Assets.xcassets */,
 			);
-			name = Resources;
 			path = Resources;
 			sourceTree = "<group>";
 		};
@@ -190,14 +193,13 @@
 			children = (
 				7D046A78DE86D9932FD2D47B /* knook.rb */,
 			);
-			name = Casks;
 			path = Casks;
 			sourceTree = "<group>";
 		};
 		8C279075F6D1C17C525E1D7D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				97720BBEF36FA64835767B84 /* knook.app */,
+				97720BBEF36FA64835767B84 /* Knook Ita.app */,
 				7831391159927EE441224DA4 /* libCore.a */,
 			);
 			name = Products;
@@ -209,15 +211,16 @@
 				7D200F40B89320371F5F1D94 /* Casks */,
 				FD4DD155C9B3C5E96EF7494A /* README.md */,
 			);
-			name = homebrew;
 			path = homebrew;
 			sourceTree = "<group>";
 		};
 		B0A01D60DCF430B599AFE07F /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				2B3C4D5E6F708192A3B4C5D6 /* ActivityLogStore.swift */,
 				949D0B0E40FEAF78A952C1E8 /* ActivityMonitor.swift */,
 				7E3D3F96FEA981DE3BB64C07 /* BreakScheduler.swift */,
+				C0FFEE1234567890ABCDEF12 /* BreakStatsStore.swift */,
 				2C774269C58DB3EDA3F645D4 /* ContextualEducationEngine.swift */,
 				0DBE49DD5A2D7C2192356CCF /* LaunchAtLoginController.swift */,
 				7FB69BE16F86EF358A2A15C7 /* Models.swift */,
@@ -225,7 +228,6 @@
 				6FBE202C8CE7480D8E0B1377 /* WellnessReminderEngine.swift */,
 				1A170B346571B75FD717E3DD /* WorkspaceContextProvider.swift */,
 			);
-			name = Core;
 			path = Core;
 			sourceTree = "<group>";
 		};
@@ -243,7 +245,6 @@
 				6937940E8198F6597BB88EC2 /* AppShell */,
 				B0A01D60DCF430B599AFE07F /* Core */,
 			);
-			name = Sources;
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
 		};
@@ -296,7 +297,7 @@
 				C17C0544A13CA3E54A507F90 /* ConfettiSwiftUI */,
 			);
 			productName = knook;
-			productReference = 97720BBEF36FA64835767B84 /* knook.app */;
+			productReference = 97720BBEF36FA64835767B84 /* Knook Ita.app */;
 			productType = "com.apple.product-type.application";
 		};
 		7BDCF235CD5A18477268976A /* Core */ = {
@@ -322,10 +323,11 @@
 		30D1FFE7C7607754275F75B3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 2660;
 			};
-			buildConfigurationList = 7F1E770ED7E2D6A64F6370C8 /* Build configuration list for PBXProject "knook" */;
+			buildConfigurationList = 7F1E770ED7E2D6A64F6370C8 /* Build configuration list for PBXProject "knook_ita" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -334,11 +336,9 @@
 				Base,
 			);
 			mainGroup = EBBC135580EDA448E9217F66;
-			minimizedProjectReferenceProxies = 0;
 			packageReferences = (
 				2521336C3920DF1812E57552 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
-			preferredProjectObjectVersion = 77;
 			productRefGroup = 8C279075F6D1C17C525E1D7D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -354,6 +354,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00A1C0F1A77043D3A4B5C6D7 /* AppIcon.icns in Resources */,
 				F9487CFCEC879C5584E1A530 /* AppIcon.png in Resources */,
 				B99A15B24924BAD733079073 /* Assets.xcassets in Resources */,
 			);
@@ -394,8 +395,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A2B3C4D5E6F708192A3B4C5 /* ActivityLogStore.swift in Sources */,
 				3AE47F78E5B95B2B98A4A7CC /* ActivityMonitor.swift in Sources */,
 				5BFFC33A8406F97054D0F112 /* BreakScheduler.swift in Sources */,
+				BA7E57A7500E123456789ABC /* BreakStatsStore.swift in Sources */,
 				C1CADB76146BCCF0620EA14C /* ContextualEducationEngine.swift in Sources */,
 				C44E681750D0C884D19D5656 /* LaunchAtLoginController.swift in Sources */,
 				B8E43C64A5F06C7CAC7A1031 /* Models.swift in Sources */,
@@ -421,6 +424,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -451,9 +455,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -468,12 +474,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SUPPORTED_PLATFORMS = macosx;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
@@ -483,22 +492,28 @@
 		4A37F0D376EE6463CAE21169 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = packaging/macos/knook.entitlements;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = BDT655MGNN;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 64QU79F48H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = packaging/macos/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SUPPORTED_PLATFORMS = macosx;
 				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.preetsuthar17.knook;
-				PRODUCT_NAME = knook;
+				PRODUCT_NAME = "Knook Ita";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
@@ -508,10 +523,15 @@
 		74316DC38EFE967C5B85FD70 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
+				ENABLE_MODULE_VERIFIER = YES;
 				EXECUTABLE_PREFIX = lib;
 				MACH_O_TYPE = staticlib;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SUPPORTED_PLATFORMS = macosx;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_NAME = Core;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -522,22 +542,28 @@
 		74D612EA23F8070CAB4F5A79 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = packaging/macos/knook.entitlements;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = BDT655MGNN;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 64QU79F48H;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = packaging/macos/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SUPPORTED_PLATFORMS = macosx;
 				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.preetsuthar17.knook;
-				PRODUCT_NAME = knook;
+				PRODUCT_NAME = "Knook Ita";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
@@ -548,6 +574,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -578,9 +605,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -589,11 +618,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SUPPORTED_PLATFORMS = macosx;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 6.0;
@@ -603,10 +635,15 @@
 		9A996438536C9F894293A54F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
+				ENABLE_MODULE_VERIFIER = YES;
 				EXECUTABLE_PREFIX = lib;
 				MACH_O_TYPE = staticlib;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SUPPORTED_PLATFORMS = macosx;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_NAME = Core;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -617,7 +654,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7F1E770ED7E2D6A64F6370C8 /* Build configuration list for PBXProject "knook" */ = {
+		7F1E770ED7E2D6A64F6370C8 /* Build configuration list for PBXProject "knook_ita" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2E64E0D242A10FE780489BAE /* Debug */,
