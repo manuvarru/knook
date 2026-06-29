@@ -29,7 +29,8 @@ Questo fork parte dalla base `v0.3.2` dell'app originale e aggiunge localizzazio
 - preset colore disabilitati quando e attivo lo sfondo del Mac
 - overlay di pausa piu coprente e meno aggirabile tramite uscita normale
 - opzioni per nascondere titolo pausa, `Salta` e `Termina prima`, lasciando solo messaggio e conto alla rovescia
-- reset del timer quando il Mac si riattiva o la sessione torna attiva, per evitare pause immediate dopo sleep o blocco schermo
+- reset del timer quando il Mac si riattiva, lo schermo si spegne/riaccende o la sessione torna attiva, per evitare pause immediate dopo sleep o blocco schermo
+- blocco del timer durante inattivita prolungata: mentre il Mac resta inutilizzato, il conto non matura una pausa in background
 - icona macOS rigenerata per riempire correttamente il contenitore
 
 ## Funzionalita
@@ -44,7 +45,8 @@ Knook Ita include:
 - modalita pausa senza pulsanti, con solo messaggio e timeout obbligatorio
 - fasce orarie di lavoro
 - reset automatico dopo inattivita
-- reset automatico dopo riattivazione del Mac o sblocco sessione
+- timer mantenuto fermo durante inattivita prolungata, screensaver o schermo spento
+- reset automatico dopo riattivazione del Mac, riaccensione schermo o sblocco sessione
 - avvio al login
 - pausa intelligente durante il focus a schermo intero
 - statistiche e log attivita locali
@@ -61,6 +63,8 @@ https://github.com/manuvarru/knook/releases/latest
 ```
 
 Sposta `Knook Ita.app` in `/Applications` e avviala. L'app comparira nella barra menu, non nel Dock.
+
+Knook Ita e configurata come app da barra menu: per questo puo non comparire nella griglia di Launchpad. Per avviarla, apri Finder > Applicazioni > `Knook Ita.app`, oppure cercala per nome con Spotlight o nella ricerca di Launchpad se macOS l'ha indicizzata.
 
 ### Homebrew
 

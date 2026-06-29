@@ -35,6 +35,7 @@ final class AppModel: ObservableObject {
 
     private var timerCancellable: AnyCancellable?
     private var wakeObserver: NSObjectProtocol?
+    private var screensSleepObserver: NSObjectProtocol?
     private var screensWakeObserver: NSObjectProtocol?
     private var sessionActiveObserver: NSObjectProtocol?
     private var updateStateCancellable: AnyCancellable?
@@ -360,6 +361,16 @@ final class AppModel: ObservableObject {
     private func bindSystemEvents() {
         wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(
             forName: .knookSystemDidWake,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.resetTimerAfterSystemResume(now: Date())
+            }
+        }
+
+        screensSleepObserver = NSWorkspace.shared.notificationCenter.addObserver(
+            forName: .knookScreensDidSleep,
             object: nil,
             queue: .main
         ) { [weak self] _ in

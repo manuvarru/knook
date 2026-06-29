@@ -101,11 +101,9 @@ public final class BreakScheduler: @unchecked Sendable {
         }
 
         if activeBreak == nil, idleSeconds >= settings.scheduleSettings.idleResetThreshold {
-            if !idleResetApplied {
-                nextBreakDate = now.addingTimeInterval(settings.breakSettings.workInterval)
-                postponedUntil = nil
-                idleResetApplied = true
-            }
+            nextBreakDate = now.addingTimeInterval(settings.breakSettings.workInterval)
+            postponedUntil = nil
+            idleResetApplied = true
             statusText = "Timer azzerato dopo inattività"
         } else {
             idleResetApplied = false

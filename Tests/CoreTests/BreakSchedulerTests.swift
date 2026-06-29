@@ -88,6 +88,23 @@ final class BreakSchedulerTests: XCTestCase {
         XCTAssertNil(snapshot.state.activeBreak)
     }
 
+    func testTimerDoesNotMatureWhileUserRemainsIdle() {
+        var settings = AppSettings.default
+        settings.breakSettings.workInterval = 60
+        settings.scheduleSettings.idleResetThreshold = 120
+        let scheduler = BreakScheduler(settings: settings)
+        let start = Date(timeIntervalSinceReferenceDate: 1000)
+
+        _ = scheduler.advance(to: start, idleSeconds: 0)
+        _ = scheduler.advance(to: start.addingTimeInterval(130), idleSeconds: 130)
+        _ = scheduler.advance(to: start.addingTimeInterval(240), idleSeconds: 240)
+        let returned = scheduler.advance(to: start.addingTimeInterval(241), idleSeconds: 0)
+
+        XCTAssertEqual(returned.state.nextBreakDate, start.addingTimeInterval(300))
+        XCTAssertNil(returned.state.activeBreak)
+        XCTAssertFalse(returned.breakJustStarted)
+    }
+
     func testResetTimerStartsFreshIntervalAfterSystemResume() {
         var settings = AppSettings.default
         settings.breakSettings.workInterval = 60
