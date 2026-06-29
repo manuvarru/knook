@@ -9,7 +9,7 @@ public final class ActivityMonitor: ActivityMonitoring, @unchecked Sendable {
     public init() {}
 
     public var idleSeconds: TimeInterval {
-        CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: .null)
+        CGEventSource.secondsSinceLastEventType(.hidSystemState, eventType: .null)
     }
 }
 
