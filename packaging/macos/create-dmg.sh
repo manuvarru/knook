@@ -26,6 +26,13 @@ rm -rf "${staging_dir}"
 mkdir -p "${staging_dir}"
 cp -R "${app_path}" "${staging_dir}/Knook Ita.app"
 ln -s /Applications "${staging_dir}/Applications"
+
+# Set the custom icon on the staging directory (so the mounted volume gets the custom icon)
+swift -e 'import AppKit; NSWorkspace.shared.setIcon(NSImage(byReferencingFile: "'"${script_dir}/AppIcon.icns"'"), forFile: "'"${staging_dir}"'", options: [])'
+
+# Set the custom icon on the app bundle (so the app inside the DMG does not have the grey border)
+swift -e 'import AppKit; NSWorkspace.shared.setIcon(NSImage(byReferencingFile: "'"${script_dir}/AppIcon.icns"'"), forFile: "'"${staging_dir}/Knook Ita.app"'", options: [])'
+
 rm -f "${output_dmg}"
 
 hdiutil create \
@@ -34,5 +41,8 @@ hdiutil create \
   -ov \
   -format UDZO \
   "${output_dmg}" >&2
+
+# Set the custom icon on the DMG file itself
+swift -e 'import AppKit; NSWorkspace.shared.setIcon(NSImage(byReferencingFile: "'"${script_dir}/AppIcon.icns"'"), forFile: "'"${output_dmg}"'", options: [])'
 
 echo "${output_dmg}"

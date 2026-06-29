@@ -17,21 +17,28 @@ guard let context = CGContext(
     bitsPerComponent: 8,
     bytesPerRow: 0,
     space: colorSpace,
-    bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue
+    bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
 ) else {
     fputs("Unable to create drawing context.\n", stderr)
     exit(1)
 }
 
-let canvas = CGRect(x: 0, y: 0, width: size, height: size)
-context.setFillColor(NSColor.white.cgColor)
-context.fill(canvas)
+// 1. Transparent background
+context.clear(CGRect(x: 0, y: 0, width: size, height: size))
 
+// 2. Draw a perfect macOS squircle shape (width/height 824 in a 1024 canvas is the Apple standard grid)
+let squircleRect = CGRect(x: 100, y: 100, width: 824, height: 824)
+let squirclePath = CGPath(roundedRect: squircleRect, cornerWidth: 180, cornerHeight: 180, transform: nil)
+context.setFillColor(NSColor.white.cgColor)
+context.addPath(squirclePath)
+context.fillPath()
+
+// 3. Draw the black pause bars inside the squircle
 context.setFillColor(NSColor.black.cgColor)
-let barWidth: CGFloat = 128
-let barHeight: CGFloat = 440
-let barRadius: CGFloat = 38
-let barGap: CGFloat = 96
+let barWidth: CGFloat = 110
+let barHeight: CGFloat = 380
+let barRadius: CGFloat = 35
+let barGap: CGFloat = 85
 let totalWidth = (barWidth * 2) + barGap
 let firstX = (CGFloat(size) - totalWidth) / 2
 let y = (CGFloat(size) - barHeight) / 2

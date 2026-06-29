@@ -54,6 +54,7 @@ app_target.build_configuration_list.build_configurations.each do |config|
   config.build_settings["ENABLE_HARDENED_RUNTIME"] = "YES"
   config.build_settings["GENERATE_INFOPLIST_FILE"] = "NO"
   config.build_settings["INFOPLIST_FILE"] = "packaging/macos/Info.plist"
+  config.build_settings["ASSETCATALOG_COMPILER_APPICON_NAME"] = "AppIcon"
   config.build_settings["LD_RUNPATH_SEARCH_PATHS"] = [
     "$(inherited)",
     "@executable_path/../Frameworks",
@@ -88,8 +89,6 @@ core_source_refs = Dir[File.join(repo_root, "Sources/Core/*.swift")].sort.map do
   core_group.new_file(File.basename(path))
 end
 resource_refs = [
-  resources_group.new_file("AppIcon.icns"),
-  resources_group.new_file("AppIcon.png"),
   resources_group.new_file("Assets.xcassets"),
 ]
 

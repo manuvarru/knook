@@ -18,9 +18,13 @@ export_path="${repo_root}/build/export"
 derived_data_path="${repo_root}/build/DerivedData"
 project_path="${repo_root}/Knook_Ita.xcodeproj"
 export_options_plist="${repo_root}/packaging/macos/ExportOptions.plist"
-signing_identity=${KNOOK_SIGNING_IDENTITY:-"Developer ID Application"}
-notary_profile=${KNOOK_NOTARY_PROFILE:-knook-notary}
 unsigned_preview=${KNOOK_UNSIGNED_PREVIEW:-0}
+signing_identity=""
+notary_profile=""
+if [[ "${unsigned_preview}" != "1" ]]; then
+  signing_identity=${KNOOK_SIGNING_IDENTITY:-"Developer ID Application"}
+  notary_profile=${KNOOK_NOTARY_PROFILE:-knook-notary}
+fi
 marketing_version=${KNOOK_MARKETING_VERSION:-${version}}
 current_project_version=${KNOOK_CURRENT_PROJECT_VERSION:-1}
 
