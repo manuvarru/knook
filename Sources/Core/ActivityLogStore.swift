@@ -2,17 +2,27 @@ import Foundation
 
 public final class ActivityLogStore {
     public let fileURL: URL
+    public let legacyFileURLs: [URL]
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
     private let minimumSamples: Int
 
-    public init(fileURL: URL = ActivityLogStore.defaultFileURL, minimumSamples: Int = 5) {
+    public init(
+        fileURL: URL = ActivityLogStore.defaultFileURL,
+        legacyFileURLs: [URL] = ActivityLogStore.legacyDefaultFileURLs,
+        minimumSamples: Int = 5
+    ) {
         self.fileURL = fileURL
+        self.legacyFileURLs = legacyFileURLs.filter {
+            $0.standardizedFileURL != fileURL.standardizedFileURL
+        }
         self.minimumSamples = minimumSamples
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
     }
 
     public func load() -> ActivityLogData {
+        migrateLegacyLogIfNeeded()
+
         guard FileManager.default.fileExists(atPath: fileURL.path),
               let data = try? Data(contentsOf: fileURL),
               let decoded = try? decoder.decode(ActivityLogData.self, from: data)
@@ -85,10 +95,30 @@ public final class ActivityLogStore {
     }
 
     public static var defaultFileURL: URL {
-        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
-            ?? URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return base
-            .appendingPathComponent("knook", isDirectory: true)
-            .appendingPathComponent("activity-log.json", isDirectory: false)
+        AppStorageLocations.currentFileURL(named: "activity-log.json")
+    }
+
+    public static var legacyDefaultFileURLs: [URL] {
+        AppStorageLocations.legacyFileURLs(named: "activity-log.json")
+    }
+
+    private func migrateLegacyLogIfNeeded() {
+        guard !FileManager.default.fileExists(atPath: fileURL.path) else {
+            return
+        }
+
+        guard let legacyFileURL = legacyFileURLs.first(where: {
+            FileManager.default.fileExists(atPath: $0.path)
+        }) else {
+            return
+        }
+
+        guard let data = try? Data(contentsOf: legacyFileURL),
+              let decoded = try? decoder.decode(ActivityLogData.self, from: data)
+        else {
+            return
+        }
+
+        save(decoded)
     }
 }

@@ -61,7 +61,7 @@ app_target.build_configuration_list.build_configurations.each do |config|
   config.build_settings["MACOSX_DEPLOYMENT_TARGET"] = "13.0"
   config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "14.0"
   config.build_settings["MARKETING_VERSION"] = marketing_version
-  config.build_settings["PRODUCT_BUNDLE_IDENTIFIER"] = "io.github.preetsuthar17.knook"
+  config.build_settings["PRODUCT_BUNDLE_IDENTIFIER"] = "io.github.manuvarru.knook-ita"
   config.build_settings["PRODUCT_NAME"] = "Knook Ita"
   config.build_settings["SDKROOT"] = "macosx"
   config.build_settings["SUPPORTED_PLATFORMS"] = "macosx"

@@ -53,24 +53,11 @@ public final class SettingsStore {
     }
 
     public static var legacyDefaultFileURLs: [URL] {
-        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
-            ?? URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return [
-            base
-                .appendingPathComponent("nook", isDirectory: true)
-                .appendingPathComponent("settings.json", isDirectory: false),
-            base
-                .appendingPathComponent("Nook", isDirectory: true)
-                .appendingPathComponent("settings.json", isDirectory: false),
-        ]
+        AppStorageLocations.legacyFileURLs(named: "settings.json")
     }
 
     public static var defaultFileURL: URL {
-        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
-            ?? URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return base
-            .appendingPathComponent("knook", isDirectory: true)
-            .appendingPathComponent("settings.json", isDirectory: false)
+        AppStorageLocations.currentFileURL(named: "settings.json")
     }
 
     private func migrateLegacySettingsIfNeeded() throws {

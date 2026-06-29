@@ -6,7 +6,7 @@ If knook is useful to you and you want to help sustain its development, the best
 
 Support ongoing work here:
 
-- [GitHub Sponsors: @preetsuthar17](https://github.com/sponsors/preetsuthar17)
+- [Fork GitHub: @manuvarru](https://github.com/manuvarru/knook)
 
 Sponsorship helps cover the time and cost of maintaining the project and its related infrastructure.
 

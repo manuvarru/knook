@@ -64,7 +64,7 @@ final class GitHubReleaseUpdateManagerTests: XCTestCase {
     }
 
     func testNewerGitHubReleasePublishesAvailableState() async {
-        let releaseURL = URL(string: "https://github.com/preetsuthar17/knook/releases/tag/v0.1.2")!
+        let releaseURL = URL(string: "https://github.com/manuvarru/knook/releases/tag/v0.1.2")!
         let manager = makeManager(
             fetcher: MockReleaseFetcher(result: .success(.init(
                 version: "v0.1.2",
@@ -83,7 +83,7 @@ final class GitHubReleaseUpdateManagerTests: XCTestCase {
         let manager = makeManager(
             fetcher: MockReleaseFetcher(result: .success(.init(
                 version: "v0.1.1",
-                releaseURL: URL(string: "https://github.com/preetsuthar17/knook/releases/tag/v0.1.1")!,
+                releaseURL: URL(string: "https://github.com/manuvarru/knook/releases/tag/v0.1.1")!,
                 isDraft: false,
                 isPrerelease: false
             )))
@@ -98,7 +98,7 @@ final class GitHubReleaseUpdateManagerTests: XCTestCase {
         let manager = makeManager(
             fetcher: MockReleaseFetcher(result: .success(.init(
                 version: "v0.2.0-beta.1",
-                releaseURL: URL(string: "https://github.com/preetsuthar17/knook/releases/tag/v0.2.0-beta.1")!,
+                releaseURL: URL(string: "https://github.com/manuvarru/knook/releases/tag/v0.2.0-beta.1")!,
                 isDraft: false,
                 isPrerelease: true
             )))
@@ -129,7 +129,7 @@ final class GitHubReleaseUpdateManagerTests: XCTestCase {
     }
 
     func testInstallAvailableUpdateRunsSilentBrewUpdate() async {
-        let releaseURL = URL(string: "https://github.com/preetsuthar17/knook/releases/tag/v0.1.2")!
+        let releaseURL = URL(string: "https://github.com/manuvarru/knook/releases/tag/v0.1.2")!
         let externalHandler = MockExternalUpdateHandler()
         let runner = MockBrewUpdateRunner(result: .success(log: "done"))
         let manager = makeManager(
@@ -156,7 +156,7 @@ final class GitHubReleaseUpdateManagerTests: XCTestCase {
     }
 
     func testInstallFailureTransitionsToError() async {
-        let releaseURL = URL(string: "https://github.com/preetsuthar17/knook/releases/tag/v0.1.2")!
+        let releaseURL = URL(string: "https://github.com/manuvarru/knook/releases/tag/v0.1.2")!
         let externalHandler = MockExternalUpdateHandler()
         let runner = MockBrewUpdateRunner(result: .failure(step: "Installing knook…", log: "cask not found"))
         let manager = makeManager(
@@ -184,11 +184,11 @@ final class GitHubReleaseUpdateManagerTests: XCTestCase {
 
     func testBrewCommandIncludesUntap() {
         let command = GitHubReleaseUpdateManager.homebrewUpdateCommand(using: "/opt/homebrew/bin/brew")
-        XCTAssertTrue(command.contains("untap preetsuthar17/tap"))
+        XCTAssertTrue(command.contains("untap 'manuvarru/tap'"))
     }
 
     func testInstallAvailableUpdateOpensReleasePageWhenBrewIsMissing() async {
-        let releaseURL = URL(string: "https://github.com/preetsuthar17/knook/releases/tag/v0.1.2")!
+        let releaseURL = URL(string: "https://github.com/manuvarru/knook/releases/tag/v0.1.2")!
         let externalHandler = MockExternalUpdateHandler()
         let manager = makeManager(
             fetcher: MockReleaseFetcher(result: .success(.init(

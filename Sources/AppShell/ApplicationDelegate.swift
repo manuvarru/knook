@@ -66,6 +66,15 @@ final class ApplicationDelegate: NSObject, NSApplicationDelegate {
         model.handleAppDidFinishLaunching()
     }
 
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        guard model.appState.activeBreak != nil else {
+            return .terminateNow
+        }
+
+        model.tick()
+        return .terminateCancel
+    }
+
     @objc private func togglePopover(_ sender: Any?) {
         guard let button = statusItem.button else { return }
 

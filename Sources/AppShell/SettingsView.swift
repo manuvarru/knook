@@ -351,10 +351,12 @@ private struct AppearanceSettingsPane: View {
 
             Section {
                 let selected = model.settings.breakSettings.backgroundStyle
+                let usesDesktopWallpaper = model.settings.breakSettings.useDesktopWallpaper
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 4), spacing: 12) {
                     ForEach(BreakBackgroundStyle.allCases) { style in
                         let isSelected = style == selected
                         Button {
+                            guard !usesDesktopWallpaper else { return }
                             model.settings.breakSettings.backgroundStyle = style
                             model.saveSettings()
                         } label: {
@@ -364,22 +366,25 @@ private struct AppearanceSettingsPane: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                            .strokeBorder(isSelected ? Color.accentColor : .clear, lineWidth: 2)
+                                            .strokeBorder(isSelected && !usesDesktopWallpaper ? Color.accentColor : .clear, lineWidth: 2)
                                     )
+                                    .saturation(usesDesktopWallpaper ? 0.25 : 1)
+                                    .opacity(usesDesktopWallpaper ? 0.35 : 1)
 
                                 Text(style.title)
                                     .font(.caption)
-                                    .foregroundStyle(isSelected ? .primary : .secondary)
+                                    .foregroundStyle(usesDesktopWallpaper ? .tertiary : (isSelected ? .primary : .secondary))
                             }
                         }
                         .buttonStyle(.plain)
+                        .disabled(usesDesktopWallpaper)
                     }
                 }
                 .padding(.vertical, 4)
             } header: {
                 Text("Stile sfondo")
             } footer: {
-                Text("Tema visivo della schermata di pausa.")
+                Text(model.settings.breakSettings.useDesktopWallpaper ? "Disattiva lo sfondo del Mac per scegliere un tema colore." : "Tema visivo della schermata di pausa.")
             }
 
             Section {

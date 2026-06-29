@@ -95,7 +95,7 @@ struct URLSessionGitHubReleaseFetcher: GitHubReleaseFetching {
 
     init(
         session: URLSession = .shared,
-        apiURL: URL = URL(string: "https://api.github.com/repos/preetsuthar17/knook/releases/latest")!
+        apiURL: URL = AppUpdateSource.latestReleaseAPIURL
     ) {
         self.session = session
         self.apiURL = apiURL
@@ -195,7 +195,7 @@ struct SystemExternalUpdateHandler: ExternalUpdateHandling {
 
 @MainActor
 final class GitHubReleaseUpdateManager: UpdateManaging {
-    private static let lastUpdateCheckDateKey = "io.github.preetsuthar17.knook.lastUpdateCheckDate"
+    private static let lastUpdateCheckDateKey = "io.github.manuvarru.knook.lastUpdateCheckDate"
 
     private let stateSubject = CurrentValueSubject<UpdateState, Never>(.idle)
     private let releaseFetcher: any GitHubReleaseFetching
@@ -227,7 +227,7 @@ final class GitHubReleaseUpdateManager: UpdateManaging {
         externalHandler: any ExternalUpdateHandling = SystemExternalUpdateHandler(),
         brewUpdateRunner: any BrewUpdateRunning = BrewUpdateRunner(),
         currentVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0.0",
-        releasePageFallbackURL: URL = URL(string: "https://github.com/preetsuthar17/knook/releases/latest")!,
+        releasePageFallbackURL: URL = AppUpdateSource.latestReleasePageURL,
         automaticCheckInterval: TimeInterval = 86_400,
         userDefaults: UserDefaults = .standard,
         nowProvider: @escaping () -> Date = Date.init,
@@ -403,15 +403,16 @@ final class GitHubReleaseUpdateManager: UpdateManaging {
 
     static func homebrewUpdateCommand(using brewPath: String) -> String {
         let quotedBrewPath = shellQuoted(brewPath)
-        return "\(quotedBrewPath) untap preetsuthar17/tap 2>/dev/null; \(quotedBrewPath) tap preetsuthar17/tap && \(quotedBrewPath) update && (\(quotedBrewPath) upgrade --cask knook || \(quotedBrewPath) install --cask knook)"
+        let quotedTap = shellQuoted(AppUpdateSource.homebrewTap)
+        return "\(quotedBrewPath) untap \(quotedTap) 2>/dev/null; \(quotedBrewPath) tap \(quotedTap) && \(quotedBrewPath) update && (\(quotedBrewPath) upgrade --cask \(AppUpdateSource.homebrewCask) || \(quotedBrewPath) install --cask \(AppUpdateSource.homebrewCask))"
     }
 
     static func homebrewUpdateSteps(using brewPath: String) -> [(label: String, arguments: [String])] {
         [
-            ("Aggiornamento tap...", ["untap", "preetsuthar17/tap"]),
-            ("Aggiornamento tap...", ["tap", "preetsuthar17/tap"]),
+            ("Aggiornamento tap...", ["untap", AppUpdateSource.homebrewTap]),
+            ("Aggiornamento tap...", ["tap", AppUpdateSource.homebrewTap]),
             ("Aggiornamento Homebrew...", ["update"]),
-            ("Installazione Knook Ita...", ["upgrade", "--cask", "knook"]),
+            ("Installazione Knook Ita...", ["upgrade", "--cask", AppUpdateSource.homebrewCask]),
         ]
     }
 
@@ -427,6 +428,16 @@ final class GitHubReleaseUpdateManager: UpdateManaging {
     private static func shellQuoted(_ string: String) -> String {
         "'\(string.replacingOccurrences(of: "'", with: "'\"'\"'"))'"
     }
+}
+
+enum AppUpdateSource {
+    static let owner = "manuvarru"
+    static let repository = "knook"
+    static let homebrewTap = "manuvarru/tap"
+    static let homebrewCask = "knook"
+
+    static let latestReleaseAPIURL = URL(string: "https://api.github.com/repos/\(owner)/\(repository)/releases/latest")!
+    static let latestReleasePageURL = URL(string: "https://github.com/\(owner)/\(repository)/releases/latest")!
 }
 
 private enum UpdateCheckTrigger {

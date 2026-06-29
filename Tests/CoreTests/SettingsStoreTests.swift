@@ -3,9 +3,9 @@ import Core
 import XCTest
 
 final class SettingsStoreTests: XCTestCase {
-    func testDefaultFileURLUsesLowercaseDirectory() {
+    func testDefaultFileURLUsesItalianForkDirectory() {
         XCTAssertEqual(SettingsStore.defaultFileURL.lastPathComponent, "settings.json")
-        XCTAssertEqual(SettingsStore.defaultFileURL.deletingLastPathComponent().lastPathComponent, "knook")
+        XCTAssertEqual(SettingsStore.defaultFileURL.deletingLastPathComponent().lastPathComponent, "knook-ita")
     }
 
     func testSettingsStorePersistsAndLoadsMigratedSettings() throws {

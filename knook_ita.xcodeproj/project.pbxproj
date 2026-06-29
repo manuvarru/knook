@@ -10,6 +10,7 @@
 		00A1C0F1A77043D3A4B5C6D7 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 00A1C0F0A77043D3A4B5C6D7 /* AppIcon.icns */; };
 		01E9E7810F7E2D2DC443CCD9 /* AppLaunchConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87DF66E11F39FA35C649B841 /* AppLaunchConfiguration.swift */; };
 		0589918E83869287928E3D7D /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 312DEADE8B5F600611CBB794 /* SettingsWindowController.swift */; };
+		0A1B2C3D4E5F60718293A4B5 /* AppStorageLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1C2D3E4F5061728394A5B6 /* AppStorageLocations.swift */; };
 		1598D652EE45B25FFEEBEFB8 /* TimerPhaseDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68572850C70E168F7F491BF9 /* TimerPhaseDisplay.swift */; };
 		19028CDB71ED90355C6EE7FD /* SharedStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98406286AA6DA6EE87B9AD8B /* SharedStyles.swift */; };
 		1966D058BC7EBEE156BFF0C7 /* WellnessReminderEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBE202C8CE7480D8E0B1377 /* WellnessReminderEngine.swift */; };
@@ -59,6 +60,7 @@
 /* Begin PBXFileReference section */
 		00A1C0F0A77043D3A4B5C6D7 /* AppIcon.icns */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		0DBE49DD5A2D7C2192356CCF /* LaunchAtLoginController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginController.swift; sourceTree = "<group>"; };
+		0B1C2D3E4F5061728394A5B6 /* AppStorageLocations.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppStorageLocations.swift; sourceTree = "<group>"; };
 		14EC45563D78ECDA662E439F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A170B346571B75FD717E3DD /* WorkspaceContextProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WorkspaceContextProvider.swift; sourceTree = "<group>"; };
 		1ACB1E8D3D45FC4E228091A6 /* BreakOverlayWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BreakOverlayWindowController.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 			children = (
 				2B3C4D5E6F708192A3B4C5D6 /* ActivityLogStore.swift */,
 				949D0B0E40FEAF78A952C1E8 /* ActivityMonitor.swift */,
+				0B1C2D3E4F5061728394A5B6 /* AppStorageLocations.swift */,
 				7E3D3F96FEA981DE3BB64C07 /* BreakScheduler.swift */,
 				C0FFEE1234567890ABCDEF12 /* BreakStatsStore.swift */,
 				2C774269C58DB3EDA3F645D4 /* ContextualEducationEngine.swift */,
@@ -397,6 +400,7 @@
 			files = (
 				1A2B3C4D5E6F708192A3B4C5 /* ActivityLogStore.swift in Sources */,
 				3AE47F78E5B95B2B98A4A7CC /* ActivityMonitor.swift in Sources */,
+				0A1B2C3D4E5F60718293A4B5 /* AppStorageLocations.swift in Sources */,
 				5BFFC33A8406F97054D0F112 /* BreakScheduler.swift in Sources */,
 				BA7E57A7500E123456789ABC /* BreakStatsStore.swift in Sources */,
 				C1CADB76146BCCF0620EA14C /* ContextualEducationEngine.swift in Sources */,
@@ -511,8 +515,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				SUPPORTED_PLATFORMS = macosx;
-				MARKETING_VERSION = 0.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.preetsuthar17.knook;
+				MARKETING_VERSION = 0.3.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.manuvarru.knook-ita";
 				PRODUCT_NAME = "Knook Ita";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -561,8 +565,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				SUPPORTED_PLATFORMS = macosx;
-				MARKETING_VERSION = 0.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.preetsuthar17.knook;
+				MARKETING_VERSION = 0.3.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.manuvarru.knook-ita";
 				PRODUCT_NAME = "Knook Ita";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;

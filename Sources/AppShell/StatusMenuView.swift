@@ -148,7 +148,12 @@ struct StatusMenuView: View {
 
             Divider().padding(.vertical, 4)
 
-            PopoverMenuRow(title: "Esci", systemImage: "power", isLast: true) {
+            PopoverMenuRow(
+                title: model.appState.activeBreak == nil ? "Esci" : "Esci non disponibile durante la pausa",
+                systemImage: "power",
+                isLast: true,
+                isDisabled: model.appState.activeBreak != nil
+            ) {
                 NSApplication.shared.terminate(nil)
             }
         }
@@ -236,13 +241,15 @@ private struct PopoverMenuRow: View {
     let title: String
     let systemImage: String?
     let isLast: Bool
+    let isDisabled: Bool
     let action: () -> Void
     @State private var isHovered = false
 
-    init(title: String, systemImage: String? = nil, isLast: Bool = false, action: @escaping () -> Void) {
+    init(title: String, systemImage: String? = nil, isLast: Bool = false, isDisabled: Bool = false, action: @escaping () -> Void) {
         self.title = title
         self.systemImage = systemImage
         self.isLast = isLast
+        self.isDisabled = isDisabled
         self.action = action
     }
 
@@ -261,10 +268,16 @@ private struct PopoverMenuRow: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .foregroundStyle(isHovered ? .white : .primary)
-        .background(isHovered ? Color.accentColor : .clear)
+        .disabled(isDisabled)
+        .foregroundStyle(foregroundColor)
+        .background(!isDisabled && isHovered ? Color.accentColor : .clear)
         .clipShape(MenuRowShape(topRadius: 4, bottomRadius: isLast ? 12 : 4))
-        .onHover { isHovered = $0 }
+        .onHover { isHovered = isDisabled ? false : $0 }
+    }
+
+    private var foregroundColor: Color {
+        if isDisabled { return .secondary }
+        return isHovered ? .white : .primary
     }
 }
 

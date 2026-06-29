@@ -10,6 +10,11 @@ final class ActivityLogStoreTests: XCTestCase {
         return ActivityLogStore(fileURL: url, minimumSamples: minimumSamples)
     }
 
+    func testDefaultFileURLUsesItalianForkDirectory() {
+        XCTAssertEqual(ActivityLogStore.defaultFileURL.lastPathComponent, "activity-log.json")
+        XCTAssertEqual(ActivityLogStore.defaultFileURL.deletingLastPathComponent().lastPathComponent, "knook-ita")
+    }
+
     private func makeDate(weekday: Int, hour: Int, dayOffset: Int = 0) -> Date {
         var calendar = Calendar.current
         calendar.firstWeekday = 1
@@ -96,5 +101,36 @@ final class ActivityLogStoreTests: XCTestCase {
         let reloaded = store.load()
         XCTAssertEqual(reloaded.weekdayLogs.count, 1)
         XCTAssertTrue(reloaded.weekdayLogs[0].activeHours.contains(10))
+    }
+
+    func testLoadMigratesFromLegacyFileLocationWhenPrimaryFileIsMissing() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+        let newFileURL = directory
+            .appendingPathComponent("knook-ita", isDirectory: true)
+            .appendingPathComponent("activity-log.json", isDirectory: false)
+        let legacyFileURL = directory
+            .appendingPathComponent("knook", isDirectory: true)
+            .appendingPathComponent("activity-log.json", isDirectory: false)
+
+        let legacyLog = ActivityLogData(
+            weekdayLogs: [WeekdayActivityLog(weekday: 2, activeHours: [9, 10], sampleCount: 6)],
+            lastRecordedDate: "2026-04-01"
+        )
+
+        try FileManager.default.createDirectory(
+            at: legacyFileURL.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try JSONEncoder().encode(legacyLog).write(to: legacyFileURL)
+
+        let store = ActivityLogStore(fileURL: newFileURL, legacyFileURLs: [legacyFileURL])
+        let loaded = store.load()
+
+        XCTAssertEqual(loaded.weekdayLogs.first?.weekday, 2)
+        XCTAssertEqual(loaded.weekdayLogs.first?.sampleCount, 6)
+        XCTAssertTrue(loaded.weekdayLogs.first?.activeHours.contains(10) == true)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: newFileURL.path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: legacyFileURL.path))
     }
 }

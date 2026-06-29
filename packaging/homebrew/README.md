@@ -6,7 +6,7 @@ The cask is ready for an unsigned preview release. Until Apple Developer signing
 
 Recommended tap repository:
 
-- `preetsuthar17/homebrew-tap`
+- `manuvarru/homebrew-tap`
 
 Recommended structure inside that tap:
 
@@ -19,9 +19,9 @@ homebrew-tap/
 Typical flow:
 
 ```bash
-brew tap-new preetsuthar17/homebrew-tap
-gh repo create preetsuthar17/homebrew-tap --public --source "$(brew --repository preetsuthar17/homebrew-tap)" --push
-cp packaging/homebrew/Casks/knook.rb "$(brew --repository preetsuthar17/homebrew-tap)/Casks/knook.rb"
+brew tap-new manuvarru/homebrew-tap
+gh repo create manuvarru/homebrew-tap --public --source "$(brew --repository manuvarru/homebrew-tap)" --push
+cp packaging/homebrew/Casks/knook.rb "$(brew --repository manuvarru/homebrew-tap)/Casks/knook.rb"
 ```
 
 Preview release flow:
@@ -34,7 +34,7 @@ gh release create v0.1.3 build/knook-0.1.3.dmg --title "knook 0.1.3" --notes "Un
 Current install guidance for users:
 
 ```bash
-brew tap preetsuthar17/tap
+brew tap manuvarru/tap
 brew install --cask knook
 xattr -dr com.apple.quarantine /Applications/knook.app
 open /Applications/knook.app

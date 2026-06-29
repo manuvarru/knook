@@ -2,15 +2,24 @@ import Foundation
 
 public final class BreakStatsStore {
     public let fileURL: URL
+    public let legacyFileURLs: [URL]
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
-    public init(fileURL: URL = BreakStatsStore.defaultFileURL) {
+    public init(
+        fileURL: URL = BreakStatsStore.defaultFileURL,
+        legacyFileURLs: [URL] = BreakStatsStore.legacyDefaultFileURLs
+    ) {
         self.fileURL = fileURL
+        self.legacyFileURLs = legacyFileURLs.filter {
+            $0.standardizedFileURL != fileURL.standardizedFileURL
+        }
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
     }
 
     public func load() -> BreakStatsData {
+        migrateLegacyStatsIfNeeded()
+
         guard FileManager.default.fileExists(atPath: fileURL.path),
               let data = try? Data(contentsOf: fileURL),
               let decoded = try? decoder.decode(BreakStatsData.self, from: data)
@@ -96,10 +105,30 @@ public final class BreakStatsStore {
     }
 
     public static var defaultFileURL: URL {
-        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
-            ?? URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return base
-            .appendingPathComponent("knook", isDirectory: true)
-            .appendingPathComponent("break-stats.json", isDirectory: false)
+        AppStorageLocations.currentFileURL(named: "break-stats.json")
+    }
+
+    public static var legacyDefaultFileURLs: [URL] {
+        AppStorageLocations.legacyFileURLs(named: "break-stats.json")
+    }
+
+    private func migrateLegacyStatsIfNeeded() {
+        guard !FileManager.default.fileExists(atPath: fileURL.path) else {
+            return
+        }
+
+        guard let legacyFileURL = legacyFileURLs.first(where: {
+            FileManager.default.fileExists(atPath: $0.path)
+        }) else {
+            return
+        }
+
+        guard let data = try? Data(contentsOf: legacyFileURL),
+              let decoded = try? decoder.decode(BreakStatsData.self, from: data)
+        else {
+            return
+        }
+
+        save(decoded)
     }
 }

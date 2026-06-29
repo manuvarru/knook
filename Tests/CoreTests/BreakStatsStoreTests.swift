@@ -10,6 +10,11 @@ final class BreakStatsStoreTests: XCTestCase {
         return BreakStatsStore(fileURL: url)
     }
 
+    func testDefaultFileURLUsesItalianForkDirectory() {
+        XCTAssertEqual(BreakStatsStore.defaultFileURL.lastPathComponent, "break-stats.json")
+        XCTAssertEqual(BreakStatsStore.defaultFileURL.deletingLastPathComponent().lastPathComponent, "knook-ita")
+    }
+
     func testRecordingMicroBreakIncrementsCount() {
         let store = makeTempStore()
         let stats = store.recordBreak(kind: .micro)
@@ -100,6 +105,39 @@ final class BreakStatsStoreTests: XCTestCase {
         let reloaded = store.load()
         XCTAssertEqual(reloaded.todayCount(), 2)
         XCTAssertEqual(reloaded.currentStreak, 1)
+    }
+
+    func testLoadMigratesFromLegacyFileLocationWhenPrimaryFileIsMissing() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+        let newFileURL = directory
+            .appendingPathComponent("knook-ita", isDirectory: true)
+            .appendingPathComponent("break-stats.json", isDirectory: false)
+        let legacyFileURL = directory
+            .appendingPathComponent("knook", isDirectory: true)
+            .appendingPathComponent("break-stats.json", isDirectory: false)
+
+        let legacyStats = BreakStatsData(
+            dailyRecords: [DailyBreakRecord(date: "2026-04-01", microBreakCount: 2, longBreakCount: 1)],
+            currentStreak: 1,
+            longestStreak: 3,
+            lastBreakDate: "2026-04-01"
+        )
+
+        try FileManager.default.createDirectory(
+            at: legacyFileURL.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try JSONEncoder().encode(legacyStats).write(to: legacyFileURL)
+
+        let store = BreakStatsStore(fileURL: newFileURL, legacyFileURLs: [legacyFileURL])
+        let loaded = store.load()
+
+        XCTAssertEqual(loaded.dailyRecords.first?.microBreakCount, 2)
+        XCTAssertEqual(loaded.dailyRecords.first?.longBreakCount, 1)
+        XCTAssertEqual(loaded.longestStreak, 3)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: newFileURL.path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: legacyFileURL.path))
     }
 
     func testEmptyStatsReturnZero() {

@@ -22,8 +22,8 @@ struct BrewUpdateRunner: BrewUpdateRunning {
         var fullLog = ""
 
         let steps: [(label: String, args: [String], allowFailure: Bool)] = [
-            ("Aggiornamento tap...", ["untap", "preetsuthar17/tap"], true),
-            ("Aggiornamento tap...", ["tap", "preetsuthar17/tap"], false),
+            ("Aggiornamento tap...", ["untap", AppUpdateSource.homebrewTap], true),
+            ("Aggiornamento tap...", ["tap", AppUpdateSource.homebrewTap], false),
             ("Aggiornamento Homebrew...", ["update"], false),
         ]
 
@@ -39,12 +39,12 @@ struct BrewUpdateRunner: BrewUpdateRunning {
 
         // Install step: try upgrade first, fall back to install
         await onProgress("Installazione Knook Ita...")
-        let upgradeResult = runProcess(executablePath: brewPath, arguments: ["upgrade", "--cask", "knook"])
-        fullLog += "=== Installazione Knook Ita... [upgrade --cask knook] ===\n\(upgradeResult.output)\n"
+        let upgradeResult = runProcess(executablePath: brewPath, arguments: ["upgrade", "--cask", AppUpdateSource.homebrewCask])
+        fullLog += "=== Installazione Knook Ita... [upgrade --cask \(AppUpdateSource.homebrewCask)] ===\n\(upgradeResult.output)\n"
 
         if upgradeResult.exitCode != 0 {
-            let installResult = runProcess(executablePath: brewPath, arguments: ["install", "--cask", "knook"])
-            fullLog += "=== Installazione Knook Ita... [install --cask knook] ===\n\(installResult.output)\n"
+            let installResult = runProcess(executablePath: brewPath, arguments: ["install", "--cask", AppUpdateSource.homebrewCask])
+            fullLog += "=== Installazione Knook Ita... [install --cask \(AppUpdateSource.homebrewCask)] ===\n\(installResult.output)\n"
 
             if installResult.exitCode != 0 {
                 return .failure(step: "Installazione Knook Ita...", log: fullLog)
@@ -53,8 +53,8 @@ struct BrewUpdateRunner: BrewUpdateRunning {
 
         // Verify the installed version matches what we expected
         await onProgress("Verifica aggiornamento...")
-        let infoResult = runProcess(executablePath: brewPath, arguments: ["list", "--cask", "--versions", "knook"])
-        fullLog += "=== Verifica aggiornamento... [list --cask --versions knook] ===\n\(infoResult.output)\n"
+        let infoResult = runProcess(executablePath: brewPath, arguments: ["list", "--cask", "--versions", AppUpdateSource.homebrewCask])
+        fullLog += "=== Verifica aggiornamento... [list --cask --versions \(AppUpdateSource.homebrewCask)] ===\n\(infoResult.output)\n"
 
         let installedVersion = infoResult.output
             .trimmingCharacters(in: .whitespacesAndNewlines)

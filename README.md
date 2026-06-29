@@ -1,164 +1,141 @@
-# knook
+# Knook Ita
 
 <p align="center">
-  <img src="Sources/AppShell/Resources/AppIcon.png" alt="knook" width="128">
+  <img src="Sources/AppShell/Resources/AppIcon.png" alt="Knook Ita" width="128">
 </p>
 
 <p align="center">
-  <strong>Open-source, privacy-first macOS break reminders for a calmer work rhythm</strong>
+  <strong>Fork italiano di knook per pause schermo su macOS, local-first e senza account</strong>
 </p>
 
-knook is a native menu bar app for macOS that helps you take screen breaks without accounts, subscriptions, or cloud syncing.
+Knook Ita e un fork di [knook](https://github.com/preetsuthar17/knook) mantenuto in italiano e adattato per un uso piu diretto su macOS. Vive nella barra menu, non mostra icona nel Dock, salva i dati in locale e aiuta a rispettare pause brevi e lunghe durante il lavoro.
 
-> knook is in active development and should be treated as early alpha software. UI details, contributor workflows, and local setup may still change as the app is being hardened.
+Questo fork parte dalla base `v0.3.1` dell'app originale e aggiunge localizzazione italiana, identita app separata, overlay di blocco piu solido, icona macOS corretta, opzioni per sfondo macOS, migrazione completa dai dati del progetto originale e aggiornamenti puntati al fork `manuvarru/knook`.
 
-[Quick Start](#quick-start) · [Install Guide](docs/installation.md) · [What knook is](#what-knook-is) · [Why knook exists](#why-knook-exists) · [What It Feels Like](#what-it-feels-like) · [Current Capabilities](#current-capabilities) · [Repository Map](#repository-map) · [Contributing](#contributing) · [Support](#support)
+> Knook Ita e in sviluppo attivo. Alcuni dettagli di distribuzione, firma e notarizzazione possono ancora cambiare.
 
-## What knook is
+[Avvio rapido](#avvio-rapido) · [Cosa cambia dal progetto originale](#cosa-cambia-dal-progetto-originale) · [Funzionalita](#funzionalita) · [Privacy e migrazione](#privacy-e-migrazione) · [Sviluppo](#sviluppo) · [Licenza](#licenza)
 
-knook is a native SwiftUI menu bar app for screen-break reminders on macOS.
+## Cosa Cambia Dal Progetto Originale
 
-It keeps track of your break rhythm locally, offers short and long breaks, and adds lightweight context-aware pause behavior so reminders can stay useful without feeling overly disruptive during focused work.
+- interfaccia utente tradotta in italiano
+- nome app `Knook Ita`
+- bundle identifier separato: `io.github.manuvarru.knook-ita`
+- dati locali salvati in `~/Library/Application Support/knook-ita`
+- migrazione automatica da `knook`, `nook` e `Nook`
+- aggiornamenti GitHub e Homebrew puntati al fork `manuvarru/knook`
+- app nascosta dal Dock, pensata per vivere solo nella barra menu
+- schermata pausa con supporto allo sfondo attuale di macOS e blur opzionale
+- preset colore disabilitati quando e attivo lo sfondo del Mac
+- overlay di pausa piu coprente e meno aggirabile tramite uscita normale
+- icona macOS rigenerata per riempire correttamente il contenitore
 
-## Why knook exists
+## Funzionalita
 
-Healthy break reminders should be available without a paywall, account system, or opaque syncing model.
+Knook Ita include:
 
-knook is being built as a community-owned, privacy-first alternative in this category: small, local-first, and understandable from the inside out.
+- app nativa macOS in SwiftUI
+- timer per pause brevi e pause lunghe
+- promemoria prima della pausa
+- overlay a schermo intero per la pausa
+- controlli per posticipare, saltare o mettere in pausa, secondo le impostazioni
+- fasce orarie di lavoro
+- reset automatico dopo inattivita
+- avvio al login
+- pausa intelligente durante il focus a schermo intero
+- statistiche e log attivita locali
+- impostazioni JSON versionate e migrate automaticamente
 
-## What It Feels Like
+## Avvio Rapido
 
-In day-to-day use, knook is meant to stay quiet until it is helpful:
+### Installazione diretta
 
-1. You launch knook and it lives in the menu bar.
-2. It keeps time for your next break locally.
-3. It gives you a heads-up reminder before the break starts.
-4. It shows a full break overlay when it is time to pause.
-5. You can postpone, skip, end early, or pause reminders depending on the current state and settings.
+Scarica l'ultima release da:
 
-The goal is not to create a complicated wellness platform. The goal is to make taking small breaks on macOS feel simple and sustainable.
+```text
+https://github.com/manuvarru/knook/releases/latest
+```
 
-## Current Capabilities
+Sposta `Knook Ita.app` in `/Applications` e avviala. L'app comparira nella barra menu, non nel Dock.
 
-knook currently provides:
-
-- a native macOS menu bar app in SwiftUI
-- a scheduler core in `Core`
-- short and long breaks
-- heads-up reminder panels
-- a break overlay window
-- postpone, skip, early end, and manual pause or resume controls
-- office hours, idle reset, and launch-at-login wiring
-- smart pause for full-screen focus
-- versioned local JSON settings
-
-## Quick Start
-
-The fastest install path is the latest GitHub release or the Homebrew cask.
-
-### Direct install
-
-Download the latest release from GitHub, move `knook.app` into `/Applications`, and launch it from there.
-
-### Optional Homebrew install
-
-Install with:
+### Homebrew
 
 ```bash
-brew tap preetsuthar17/tap
+brew tap manuvarru/tap
 brew install --cask knook
 ```
 
-Upgrade later with:
+Aggiornamento:
 
 ```bash
 brew update
 brew upgrade --cask knook
 ```
 
-When a newer GitHub release is published, knook shows an update banner in the menu bar popover. The `Update` button opens a Homebrew upgrade command in Terminal when Homebrew is available and falls back to the GitHub release page otherwise.
+Quando viene pubblicata una nuova release nel fork, Knook Ita mostra un avviso di aggiornamento nel menu. Se Homebrew e disponibile, l'aggiornamento usa il tap `manuvarru/tap`; altrimenti apre la pagina release del fork.
 
-### Source build
+## Privacy E Migrazione
 
-Requirements:
+Knook Ita non usa account, server o cloud sync. Le impostazioni, le statistiche e il log attivita restano sul Mac.
 
-- macOS 13 or newer
-- a current Swift toolchain
-- a full Xcode installation for the best local development experience
+Nuovo percorso dati:
 
-Build the app:
+```text
+~/Library/Application Support/knook-ita
+```
+
+Al primo avvio, se i nuovi dati non esistono, l'app importa automaticamente dai vecchi percorsi:
+
+```text
+~/Library/Application Support/knook
+~/Library/Application Support/nook
+~/Library/Application Support/Nook
+```
+
+I vecchi file non vengono cancellati durante la migrazione.
+
+## Sviluppo
+
+Requisiti:
+
+- macOS 13 o superiore
+- Swift toolchain recente
+- Xcode completo per build e test locali
+
+Build:
 
 ```bash
 swift build
 ```
 
-Run the app:
+Esecuzione:
 
 ```bash
 swift run
 ```
 
-For the full local development workflow, including `swift run knook`, filtered test commands, and launch-time overrides such as `KNOOK_WORK`, `KNOOK_BREAK`, and `KNOOK_FORCE_ONBOARDING`, see [docs/local-development.md](docs/local-development.md).
-
-For a deeper install guide, including troubleshooting, uninstall, and reset steps, see [docs/installation.md](docs/installation.md).
-
-Quick examples:
+Test:
 
 ```bash
 swift test
 ```
 
+Build Xcode:
+
 ```bash
-KNOOK_FORCE_ONBOARDING=1 swift run
+xcodebuild -project knook_ita.xcodeproj -scheme knook -configuration Debug build
 ```
 
-`swift test` currently expects a full Xcode installation in this repository's setup.
+Per dettagli aggiuntivi sul workflow locale, vedi [docs/local-development.md](docs/local-development.md).
 
-## Known Limitations
+## Struttura Repository
 
-- source build and developer setup are required today
-- screenshots and demo assets are not included in the README yet
-- signed and notarized distribution is still being finalized
-- the contributor-facing test workflow still needs cleanup
+- `Sources/AppShell/`: app macOS, menu bar, finestre e coordinamento UI
+- `Sources/Core/`: scheduler, modelli, persistenza e logica condivisa
+- `Tests/`: test di Core e AppShell
+- `docs/`: documentazione di sviluppo, installazione e release
+- `packaging/`: packaging macOS, cask Homebrew e script release
 
-## Repository Map
+## Licenza
 
-- `Sources/AppShell/`: macOS app shell, menu bar UI, windows, and app coordination
-- `Sources/Core/`: scheduler, models, persistence, and platform integration
-- `Tests/`: scheduler, persistence, and app test coverage
-- `docs/`: release and supporting project docs, including the local development guide
-- `packaging/`: macOS packaging assets, Xcode project generator, release scripts, and Homebrew cask template
-
-## Contributing
-
-Contributions are welcome, especially around scheduler behavior, macOS polish, onboarding, and documentation.
-
-Start with [CONTRIBUTING.md](CONTRIBUTING.md) for local setup expectations and contribution guidelines. If you find a bug or want to propose a feature, open an issue or feature request in GitHub.
-
-## Support
-
-If you want to support ongoing maintenance, see [SUPPORT.md](SUPPORT.md).
-
-## Privacy
-
-knook stores its settings locally in Application Support and does not send data to a server.
-
-## Roadmap
-
-### Near term
-
-- polish the reminder and break overlay interactions
-- improve keyboard accessibility and labeling
-- strengthen smart timing beyond the current MVP
-- tighten the public contributor workflow
-
-### Later
-
-- additional smart pause providers such as meetings and video contexts
-- AppleScript or Shortcuts support
-- Focus Filters integration
-- published notarized distribution
-
-## License
-
-knook is available under the [MIT License](LICENSE).
+Knook Ita mantiene la licenza [MIT](LICENSE) del progetto originale.

@@ -38,4 +38,4 @@
 - Attach screenshots to the GitHub release notes
 - Publish the `knook-<version>.dmg`
 - Update `packaging/homebrew/Casks/knook.rb` with the new version and SHA
-- Copy the cask into `preetsuthar17/homebrew-tap`
+- Copy the cask into `manuvarru/homebrew-tap`

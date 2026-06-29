@@ -2,7 +2,7 @@
 
 ## Summary
 
-`knook` supports direct installs from GitHub releases and Homebrew installs from `preetsuthar17/tap`. knook checks the latest GitHub release and prefers Homebrew for guided upgrades.
+`knook` supports direct installs from GitHub releases and Homebrew installs from `manuvarru/tap`. knook checks the latest GitHub release and prefers Homebrew for guided upgrades.
 
 ## Requirements
 
@@ -11,7 +11,7 @@
 
 ## Install
 
-1. Open the latest release: [GitHub Releases](https://github.com/preetsuthar17/knook/releases/latest)
+1. Open the latest release: [GitHub Releases](https://github.com/manuvarru/knook/releases/latest)
 2. Download the latest DMG
 3. Move `knook.app` into `/Applications`
 4. Launch `knook` once from `/Applications`
@@ -23,7 +23,7 @@ knook checks the latest GitHub release automatically and shows an update banner 
 Use the `Update` button in the popover to open a Homebrew upgrade command in Terminal:
 
 ```bash
-brew tap preetsuthar17/tap && brew update && (brew upgrade --cask knook || brew install --cask knook)
+brew tap manuvarru/tap && brew update && (brew upgrade --cask knook || brew install --cask knook)
 ```
 
 If Homebrew is not available, the same button opens the GitHub release page instead.
@@ -33,7 +33,7 @@ If Homebrew is not available, the same button opens the GitHub release page inst
 Homebrew remains the preferred package-manager distribution path:
 
 ```bash
-brew tap preetsuthar17/tap
+brew tap manuvarru/tap
 brew install --cask knook
 ```
 
@@ -92,8 +92,8 @@ rm -rf /Applications/knook.app
 rm -rf ~/Library/Application\ Support/knook
 rm -rf ~/Library/Application\ Support/nook
 rm -rf ~/Library/Application\ Support/Nook
-rm -f ~/Library/Preferences/io.github.preetsuthar17.knook.plist
-rm -rf ~/Library/Saved\ Application\ State/io.github.preetsuthar17.knook.savedState
+rm -f ~/Library/Preferences/io.github.manuvarru.knook-ita.plist
+rm -rf ~/Library/Saved\ Application\ State/io.github.manuvarru.knook-ita.savedState
 ```
 
 Then install the newest release again into `/Applications`.
@@ -125,8 +125,8 @@ rm -rf /Applications/knook.app
 rm -rf ~/Library/Application\ Support/knook
 rm -rf ~/Library/Application\ Support/nook
 rm -rf ~/Library/Application\ Support/Nook
-rm -f ~/Library/Preferences/io.github.preetsuthar17.knook.plist
-rm -rf ~/Library/Saved\ Application\ State/io.github.preetsuthar17.knook.savedState
+rm -f ~/Library/Preferences/io.github.manuvarru.knook-ita.plist
+rm -rf ~/Library/Saved\ Application\ State/io.github.manuvarru.knook-ita.savedState
 ```
 
 ## Notes
